@@ -1,4 +1,4 @@
-# Student productivity helper app - FrontEnd
+# Student productivity helper app - Frontend
 Faculty team project, part of the ICT Project Management curriculum.
 
 Technologies used:
