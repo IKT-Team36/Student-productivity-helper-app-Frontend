@@ -1,5 +1,5 @@
 # Student productivity helper app - FrontEnd
-Faculty team project, part of the ICT Project Management curriculum
+Faculty team project, part of the ICT Project Management curriculum.
 
 Technologies used:
 <ul>
@@ -7,3 +7,5 @@ Technologies used:
   <li>Vite</li>
   <li>TypeScript</li>
 </ul> 
+
+<a href="https://student-productivity-helper-app.netlify.app/" target="_blank"> Live Demo  </a>
