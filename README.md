@@ -7,3 +7,5 @@ Technologies used:
   <li>Vite</li>
   <li>TypeScript</li>
 </ul> 
+
+https://student-productivity-helper-app.netlify.app/
