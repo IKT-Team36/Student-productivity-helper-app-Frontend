@@ -8,4 +8,4 @@ Technologies used:
   <li>TypeScript</li>
 </ul> 
 
-https://student-productivity-helper-app.netlify.app/
+<a target="_blank">https://student-productivity-helper-app.netlify.app/</a>
