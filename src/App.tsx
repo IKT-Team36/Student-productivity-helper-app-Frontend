@@ -6,7 +6,7 @@ function App() {
                 top: '50%',
                 left: '50%',
                 marginTop: '-50px',
-                marginLeft: '-100px',
+                marginLeft: '-140px',
             }}>
                 Welcome to our 'Student helper application'
             </div>
