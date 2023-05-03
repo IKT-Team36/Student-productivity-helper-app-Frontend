@@ -12,6 +12,6 @@ export default defineConfig({
     port: 3000,
   },
   resolve: {
-    alias: [{ find: 'src', replacement: path.resolve(projectRootDir, 'src') }],
+    alias: [{ find: '@src', replacement: path.resolve(projectRootDir, './src') }],
   },
 })

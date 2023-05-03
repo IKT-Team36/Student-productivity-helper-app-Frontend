@@ -1,16 +1,20 @@
+import React from 'react'
+import {ThemeModeProvider} from "./theme/ThemeModeProvider";
+import {ThemeMode} from "./theme/ThemeMode";
+import {GenerateRoutes} from "./routing/GenerateRoutes";
+import {BrowserRouter} from "react-router-dom";
+import {CssBaseline} from "@mui/material";
+
 function App() {
     return (
-        <div className="App">
-            <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginTop: '-50px',
-                marginLeft: '-140px',
-            }}>
-                Welcome to our 'Student helper application'
-            </div>
-        </div>
+        <ThemeModeProvider>
+            <ThemeMode>
+                <CssBaseline/>
+                <BrowserRouter>
+                    <GenerateRoutes/>
+                </BrowserRouter>
+            </ThemeMode>
+        </ThemeModeProvider>
     )
 }
 
