@@ -109,6 +109,7 @@ export const Calendar = () => {
                     onMonthChange={handleMonthChange}
                     renderLoading={() => <DayCalendarSkeleton/>}
                     slots={{
+                        // @ts-ignore
                         day: ServerDay
                     }}
                     slotProps={{
