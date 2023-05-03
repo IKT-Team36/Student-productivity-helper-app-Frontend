@@ -8,7 +8,7 @@ export const NotFound = () => {
             <Box display={'flex'} justifyContent={'center'}>
                 <Box>
                     <Typography variant={'h1'} textAlign={'center'}>404</Typography>
-                    <Typography variant={'h2'}>Not Found</Typography>
+                    <Typography variant={'h2'} textAlign={'center'}>Not Found</Typography>
                 </Box>
             </Box>
             <Alert variant="outlined" severity="error" sx={{mt: 5}}>
