@@ -1,9 +1,9 @@
 import React from 'react'
 import {
     AppBar as MuiAppBar,
-    Box,
+    Box, ClickAwayListener,
     Drawer as MuiDrawer,
-    IconButton,
+    IconButton, Paper,
     styled,
     Toolbar,
 } from "@mui/material";
@@ -88,39 +88,49 @@ export const Layout = () => {
         setOpenSettings(false)
     };
 
+    const closeMenuDrawer = () => {
+        if (openMenu) {
+            setOpenMenu(false)
+        }
+    }
+
     const toggleSettingsDrawer = () => {
         setOpenSettings(!openSettings);
         setOpenMenu(false)
     };
+
     return (
         <Box sx={{display: 'flex'}}>
             <Box sx={{display: 'flex'}}>
+                <ClickAwayListener onClickAway={closeMenuDrawer}>
+                    <Paper elevation={0}>
+                        <AppBar position="fixed" open={openMenu}>
+                            <Toolbar>
+                                {!openMenu &&
+                                    <IconButton
+                                        onClick={toggleMenuDrawer}
+                                        edge="start"
+                                        sx={{mr: 2, color: 'white'}}>
+                                        <Menu/>
+                                    </IconButton>
+                                }
+                                <Box marginLeft={'auto'}>
+                                    <IconButton
+                                        onClick={toggleSettingsDrawer}
+                                        edge="end"
+                                        sx={{color: 'white'}}
+                                    >
+                                        <Settings/>
+                                    </IconButton>
+                                </Box>
+                            </Toolbar>
+                        </AppBar>
 
-                <AppBar position="fixed" open={openMenu}>
-                    <Toolbar>
-                        {!openMenu &&
-                            <IconButton
-                                onClick={toggleMenuDrawer}
-                                edge="start"
-                                sx={{mr: 2, color: 'white'}}>
-                                <Menu/>
-                            </IconButton>
-                        }
-                        <Box marginLeft={'auto'}>
-                            <IconButton
-                                onClick={toggleSettingsDrawer}
-                                edge="end"
-                                sx={{color: 'white'}}
-                            >
-                                <Settings/>
-                            </IconButton>
-                        </Box>
-                    </Toolbar>
-                </AppBar>
-
-                <Drawer variant="permanent" open={openMenu}>
-                    <MainSidebar toggleDrawer={toggleMenuDrawer} open={openMenu}/>
-                </Drawer>
+                        <Drawer variant="permanent" open={openMenu}>
+                            <MainSidebar toggleDrawer={toggleMenuDrawer} open={openMenu}/>
+                        </Drawer>
+                    </Paper>
+                </ClickAwayListener>
 
                 <MuiDrawer
                     anchor={"right"}
@@ -134,7 +144,6 @@ export const Layout = () => {
             <MainContent open={openMenu}>
                 <Outlet/>
             </MainContent>
-
         </Box>
     )
 }
