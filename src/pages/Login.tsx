@@ -3,7 +3,6 @@ import {Col, Row} from "react-bootstrap";
 import '../CSS/Login.css'
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import {} from 'bootstrap-icons/icons/5-square.svg'
 import {Link} from "react-router-dom";
 function Login(){
     return(
