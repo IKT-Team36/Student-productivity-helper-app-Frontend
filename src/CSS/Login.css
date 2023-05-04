@@ -1,0 +1,30 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
+#login{
+    color: white;
+    text-align: center;
+    margin-top: 30px;
+}
+#div-col{
+    background: black;
+    height: 600px;
+    width: 65%;
+    border-radius: 50px;
+}
+#col{
+    display: flex;
+    justify-content: center;
+}
+#small-text{
+    color: white !important;
+}
+#forma{
+    display: flex;
+    flex-direction: column;
+}
+#kopce, #p-tag{
+    width: 400px;
+    align-self: center;
+    margin-top: 50px;
+    text-align: center;
+}

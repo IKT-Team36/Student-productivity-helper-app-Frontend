@@ -1,0 +1,12 @@
+input{
+    border: solid 1px black;
+    border-radius: 10px;
+    width: 300px;
+    padding: 5px;
+}
+label{
+    width: 200px;
+}
+.form-check-label{
+    width: 300px;
+}

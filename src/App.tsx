@@ -1,16 +1,16 @@
+import './CSS/App.css'
+import {Route, Routes} from 'react-router-dom'
+import Home from "./pages/Home"
+import Login from "./pages/Login"
+import Signup from "./pages/Singup";
+
 function App() {
     return (
-        <div className="App">
-            <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginTop: '-50px',
-                marginLeft: '-140px',
-            }}>
-                Welcome to our 'Student helper application'
-            </div>
-        </div>
+        <Routes>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/signup' element={<Signup/>}/>
+        </Routes>
     )
 }
 
