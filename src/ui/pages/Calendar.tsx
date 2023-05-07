@@ -227,6 +227,16 @@ export const Calendar = () => {
                         anchorEl={anchorEl}
                         placement={'bottom'}
                         transition
+                        modifiers={[
+                            {
+                                name: 'flip',
+                                enabled: false,
+                            },
+                            {
+                                name: 'preventOverflow',
+                                enabled: false,
+                            }
+                        ]}
                     >
                         {({TransitionProps}) => (
                             <Fade {...TransitionProps} timeout={250}>
