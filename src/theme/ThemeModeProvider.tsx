@@ -12,6 +12,7 @@ import {
 } from "@mui/material/colors";
 import {PaletteColorOptions} from "@mui/material/styles";
 import {PaletteMode} from "@mui/material";
+import {DEFAULT_COLOR} from "@src/theme/Theme";
 
 export interface ColorPalette {
     color: PaletteColorOptions,
@@ -46,10 +47,11 @@ export const useThemeMode = (): ThemeModeContextValue => {
 }
 
 export const ThemeModeProvider: FC<PropsWithChildren> = ({children}): ReactElement => {
-    const [mode, setMode] = useState<PaletteMode>('light')
-    const [color, setColor] = useState<PaletteColorOptions>(blueGrey)
+    const defaultColor: PaletteColorOptions = DEFAULT_COLOR
 
-    const defaultColor: PaletteColorOptions = blueGrey
+    const [mode, setMode] = useState<PaletteMode>('light')
+    const [color, setColor] = useState<PaletteColorOptions>(defaultColor)
+
     const colorPalette: ColorPalette[] = [
         // primary
         {color: red, name: 'Red', hexColor: '#ef5350', primary: true},

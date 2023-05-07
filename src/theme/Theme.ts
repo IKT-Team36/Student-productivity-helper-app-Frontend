@@ -9,6 +9,8 @@ import PlusJakartaSansExtraLightItalic from '@src/assets/font/PlusJakartaSans-Ex
 import PlusJakartaSansMediumItalic from '@src/assets/font/PlusJakartaSans-MediumItalic.ttf';
 import PlusJakartaSansRegular from '@src/assets/font/PlusJakartaSans-Regular.ttf';
 
+export const DEFAULT_COLOR = blueGrey
+
 const sharedThemeOptions: ThemeOptions = {
     typography: {
         fontSize: 15,
@@ -73,7 +75,7 @@ const themeOptionsLight: ThemeOptions = {
     ...sharedThemeOptions,
     palette: {
         mode: 'light',
-        primary: blueGrey,
+        primary: DEFAULT_COLOR,
         secondary: {
             main: '#fff',
         },
@@ -90,7 +92,6 @@ const themeOptionsDark: ThemeOptions = {
         mode: 'dark',
         primary: {
             main: '#fff',
-            light: '#000'
         },
         text: {
             primary: '#fff',

@@ -111,7 +111,6 @@ const EventsBody = styled(Paper)(({theme}) => ({
     marginTop: theme.spacing(2),
     zIndex: '90000 !important',
     border: '1px solid rgba(0,0,0,0.1)',
-    boxShadow: '0px 0px 100px 4px rgba(0,0,0,0.1)',
     padding: '20px',
     [theme.breakpoints.down('md')]: {
         padding: '10px'
@@ -128,6 +127,7 @@ const EventBadge = styled(Badge)<{ isselected: number }>
         top: '-4px',
         marginTop: 2,
         marginBottom: 2,
+        backgroundColor: isselected ? theme.palette.primary.light : '',
         [theme.breakpoints.up('md')]: {
             height: isselected ? '50px' : '',
             width: isselected ? '90px' : '',
