@@ -125,7 +125,7 @@ const EventBadge = styled(Badge)<{ isselected: number }>
         '& .MuiTypography-root': {
             fontSize: '9px !important',
         },
-        top: '-7px',
+        top: '-4px',
         marginTop: 2,
         marginBottom: 2,
         [theme.breakpoints.up('md')]: {
