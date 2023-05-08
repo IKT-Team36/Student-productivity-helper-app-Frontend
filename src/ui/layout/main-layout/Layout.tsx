@@ -19,7 +19,6 @@ const drawerCloseWidthBigScreen = 70;
 
 const MainContent = styled(Box)<{ open: boolean }>(({theme, open}) => ({
     width: '100vh',
-    height: '300vh',
     position: 'relative',
     marginTop: theme.spacing(7),
     // match with width of drawer when open/closed

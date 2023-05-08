@@ -35,7 +35,7 @@ export const ListItemLink = ({icon, primary, to, className, ...rest}: ListItemLi
     )
 
     return (
-        <ListItemButton className={className} component={LinkBehavior} {...rest}>
+        <ListItemButton className={className} component={LinkBehavior} {...rest} disableRipple>
             {icon ? <StyledListItemIcon>{icon}</StyledListItemIcon> : null}
             {primary && <ListItemText style={{color: theme.palette.primary.main}} primary={primary}/>}
         </ListItemButton>

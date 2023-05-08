@@ -24,9 +24,13 @@ const DateCalendarStyled = styled(DateCalendar)(({theme}) => ({
         width: '100%',
     },
     minHeight: '700px',
+    [theme.breakpoints.down('md')]: {
+        minHeight: '200px',
+    },
     '& .MuiDayCalendar-header': {
         justifyContent: 'space-between !important',
         padding: '20px',
+        paddingBottom: 0,
         marginLeft: '40px',
         marginRight: '40px',
         [theme.breakpoints.down('md')]: {
@@ -50,6 +54,11 @@ const DateCalendarStyled = styled(DateCalendar)(({theme}) => ({
         overflowX: 'none',
     },
     '& .MuiDayCalendar-weekContainer': {
+        [theme.breakpoints.up('md')]: {
+            borderBottom: '1px solid',
+            borderTop: '1px solid',
+            borderColor: theme.palette.primary.main,
+        },
         justifyContent: 'space-between !important',
         margin: '5px',
         marginTop: '20px',
@@ -232,14 +241,10 @@ export const Calendar = () => {
                                 name: 'flip',
                                 enabled: false,
                             },
-                            {
-                                name: 'preventOverflow',
-                                enabled: false,
-                            }
                         ]}
                     >
                         {({TransitionProps}) => (
-                            <Fade {...TransitionProps} timeout={250}>
+                            <Fade {...TransitionProps} timeout={150}>
                                 {eventsDetails()}
                             </Fade>
                         )}
