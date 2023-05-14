@@ -23,7 +23,7 @@ const MainContent = styled(Box)<{ open: boolean }>(({theme, open}) => ({
     marginTop: theme.spacing(7),
     // match with width of drawer when open/closed
     marginLeft: open ? `${drawerOpenWidth}px` : `${drawerCloseWidthBigScreen}px`,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
         marginLeft: open ? `${drawerOpenWidth}px` : `${drawerCloseWidthSmallScreen}px`,
         // prevent horizontal scrollbar on mobile
         overflow: 'scroll',
