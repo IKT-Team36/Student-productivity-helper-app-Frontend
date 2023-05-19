@@ -57,7 +57,7 @@ export const SettingsSidebar = () => {
             {/* theme color */}
             <Box sx={{padding: 2}}>
                 <Box mb={2} mt={2}>
-                    <Typography variant="subtitle1" fontWeight={'normal'}>Theme Color: </Typography>
+                    <Typography variant="subtitle1" fontWeight={'normal'}>Theme Color - Light: </Typography>
                 </Box>
 
                 <Grid container>

@@ -6,11 +6,11 @@ import {
     SpeakerNotesOutlined,
     EventNoteRounded
 } from "@mui/icons-material";
-import {Home} from "@src/ui/pages/Home";
-import {Courses} from "@src/ui/pages/Courses";
-import {Todos} from "@src/ui/pages/Todos";
-import {Notes} from "@src/ui/pages/Notes";
-import {Calendar} from "@src/ui/pages/Calendar";
+import {Home} from "@src/ui/pages/home/Home";
+import {Courses} from "@src/ui/pages/courses/Courses";
+import {Todos} from "@src/ui/pages/todos/Todos";
+import {Notes} from "@src/ui/pages/notes/Note";
+import {Calendar} from "@src/ui/pages/calendar/Calendar";
 
 export interface RouteModel {
     path: string
@@ -25,6 +25,7 @@ export interface RoutesList {
 }
 
 export const ROUTES: RoutesList = {
+    // main route, fix first position
     Home: {
         path: '/home',
         Component: Home,
