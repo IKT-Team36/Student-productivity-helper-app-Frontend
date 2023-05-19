@@ -61,7 +61,7 @@ export const MainSidebar: FC<Prop> = ({toggleDrawer, open}) => {
         sectionLabel: string | undefined,
         prevSectionLabel: string | undefined,
     ): ReactElement | null => {
-        if (sectionLabel && sectionLabel !== prevSectionLabel && open) {
+        if (sectionLabel && sectionLabel !== prevSectionLabel && (open || smallScreen)) {
             return <StyledListSubheader color="primary">{sectionLabel}</StyledListSubheader>
         }
         return null
