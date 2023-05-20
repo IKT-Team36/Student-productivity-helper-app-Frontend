@@ -55,6 +55,12 @@ export const ThemeModeProvider: FC<PropsWithChildren> = ({children}): ReactEleme
     const [mode, setMode] = useState<PaletteMode>('light')
     const [color, setColor] = useState<PaletteColorOptions>(defaultColor)
 
+    const systemDarkMode = React.useMemo(() => {
+            return prefersDarkMode
+        },
+        [prefersDarkMode],
+    );
+
     const colorPalette: ColorPalette[] = [
         // primary
         {color: red, name: 'Red', hexColor: '#ef5350', primary: true},
@@ -73,7 +79,7 @@ export const ThemeModeProvider: FC<PropsWithChildren> = ({children}): ReactEleme
     }
 
     const setSystemMode = (): void => {
-        setMode(prefersDarkMode ? 'dark' : 'light')
+        setMode(systemDarkMode ? 'dark' : 'light')
     }
 
     const setThemeColor = (colorSelected: PaletteColorOptions): void => {
