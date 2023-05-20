@@ -9,7 +9,7 @@ import {
     styled,
     Typography, useMediaQuery, useTheme
 } from "@mui/material";
-import {DarkMode, LightMode, ColorLens} from "@mui/icons-material";
+import {DarkMode, LightMode, ColorLens, SettingsBrightness} from "@mui/icons-material";
 import {useThemeMode} from "@src/theme/ThemeModeProvider";
 
 
@@ -29,7 +29,7 @@ interface Prop {
 }
 
 export const SettingsSidebar: FC<Prop> = ({toggleDrawer, open}) => {
-    const {mode, color, colorPalette, setThemeMode, setThemeColor, defaultColor} = useThemeMode()
+    const {mode, color, colorPalette, setThemeMode, setThemeColor, setSystemMode, defaultColor} = useThemeMode()
     const theme = useTheme()
     const smallScreen = useMediaQuery(theme.breakpoints.down('lg'))
 
@@ -55,6 +55,9 @@ export const SettingsSidebar: FC<Prop> = ({toggleDrawer, open}) => {
                         <ButtonGroup size={'large'} variant={'text'}>
                             <Button onClick={setThemeMode} startIcon={<LightMode/>} disabled={mode === "light"}>
                                 <Typography variant={"caption"}>Light</Typography>
+                            </Button>
+                            <Button onClick={setSystemMode} startIcon={<SettingsBrightness/>}>
+                                <Typography variant={"caption"}>System</Typography>
                             </Button>
                             <Button onClick={setThemeMode} startIcon={<DarkMode/>} disabled={mode === 'dark'}>
                                 <Typography variant={"caption"}>Dark</Typography>
