@@ -11,7 +11,7 @@ import {
     teal
 } from "@mui/material/colors";
 import {PaletteColorOptions} from "@mui/material/styles";
-import {PaletteMode, useMediaQuery} from "@mui/material";
+import {PaletteMode} from "@mui/material";
 import {DEFAULT_COLOR} from "@src/theme/Theme";
 
 export interface ColorPalette {
@@ -50,7 +50,6 @@ export const useThemeMode = (): ThemeModeContextValue => {
 
 export const ThemeModeProvider: FC<PropsWithChildren> = ({children}): ReactElement => {
     const defaultColor: PaletteColorOptions = DEFAULT_COLOR
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
     const [mode, setMode] = useState<PaletteMode>('light')
     const [color, setColor] = useState<PaletteColorOptions>(defaultColor)
@@ -73,6 +72,7 @@ export const ThemeModeProvider: FC<PropsWithChildren> = ({children}): ReactEleme
     }
 
     const setSystemMode = (): void => {
+        const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
         setMode(prefersDarkMode ? 'dark' : 'light')
     }
 
