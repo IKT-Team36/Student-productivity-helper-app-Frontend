@@ -10,7 +10,7 @@ import {
 import {ChevronLeft} from "@mui/icons-material";
 import React, {FC, ReactElement} from "react";
 import {ROUTES} from "@src/routing/Routes";
-import {ListItemLink} from "@src/ui/layout/sidebar/ListItemLink";
+import {ListItemLink} from "@src/ui-shared/link/ListItemLink";
 import {DRAWER_CLOSE_WIDTH_LG, DRAWER_OPEN_WIDTH} from "@src/ui-shared/constants/Constants";
 
 const StyledListSubheader = styled(ListSubheader)(({theme}) => ({

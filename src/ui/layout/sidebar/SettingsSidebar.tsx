@@ -92,9 +92,10 @@ export const SettingsSidebar: FC<Prop> = ({toggleDrawer, open}) => {
                             </Box>
                             <Box display={'flex'} justifyContent={'center'}>
                                 <List dense={false}>
-                                    {colorPalette.filter(colorTheme => colorTheme.primary).map((colorTheme) => {
+                                    {colorPalette.filter(colorTheme => colorTheme.primary).map((colorTheme, index) => {
                                         return (
                                             <ListItemButton
+                                                key={index}
                                                 selected={color === colorTheme.color && mode === 'light'}
                                                 onClick={() => setThemeColor(colorTheme.color)}
                                             >
@@ -125,9 +126,10 @@ export const SettingsSidebar: FC<Prop> = ({toggleDrawer, open}) => {
 
                             <Box display={'flex'} justifyContent={'center'}>
                                 <List dense={false}>
-                                    {colorPalette.filter(colorTheme => !colorTheme.primary).map((colorTheme) => {
+                                    {colorPalette.filter(colorTheme => !colorTheme.primary).map((colorTheme, index) => {
                                         return (
                                             <ListItemButton
+                                                key={index}
                                                 selected={color === colorTheme.color && mode === 'light'}
                                                 onClick={() => setThemeColor(colorTheme.color)}
                                             >
