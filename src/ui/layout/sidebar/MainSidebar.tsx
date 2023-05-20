@@ -17,7 +17,8 @@ const StyledListSubheader = styled(ListSubheader)(({theme}) => ({
     lineHeight: theme.spacing(2),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    backgroundColor: 'transparent'
 }))
 
 const StyledDrawer = styled(Drawer)<{
