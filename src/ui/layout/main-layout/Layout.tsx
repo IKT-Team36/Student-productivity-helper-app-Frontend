@@ -6,7 +6,7 @@ import {
     styled,
     Toolbar, Typography, useMediaQuery, useTheme,
 } from "@mui/material";
-import {Menu, Settings, School} from "@mui/icons-material";
+import {Menu, Settings,  SchoolRounded} from "@mui/icons-material";
 import {Outlet} from "react-router-dom";
 import {useState} from "react";
 import {MainSidebar} from "@src/ui/layout/sidebar/MainSidebar";
@@ -84,7 +84,7 @@ export const Layout = () => {
                                     </IconButton>
                                 )}
                                 <Box alignItems={'center'} display={'flex'}>
-                                    <School sx={{mr: 1}}/>
+                                    <SchoolRounded sx={{mr: 1}}/>
                                     <Typography variant="subtitle1" textAlign={'center'} component="div"
                                                 sx={{flexGrow: 1,}}
                                                 fontWeight={600} letterSpacing={1}>
