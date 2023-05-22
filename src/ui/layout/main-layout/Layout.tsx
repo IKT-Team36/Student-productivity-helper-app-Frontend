@@ -4,9 +4,9 @@ import {
     Box, ClickAwayListener,
     IconButton, Paper,
     styled,
-    Toolbar, useMediaQuery, useTheme,
+    Toolbar, Typography, useMediaQuery, useTheme,
 } from "@mui/material";
-import {Menu, Settings} from "@mui/icons-material";
+import {Menu, Settings, School} from "@mui/icons-material";
 import {Outlet} from "react-router-dom";
 import {useState} from "react";
 import {MainSidebar} from "@src/ui/layout/sidebar/MainSidebar";
@@ -83,6 +83,16 @@ export const Layout = () => {
                                         <Menu/>
                                     </IconButton>
                                 )}
+                                <Box alignItems={'center'} display={'flex'}>
+                                    <School sx={{mr: 1}}/>
+                                    <Typography variant="subtitle1" textAlign={'center'} component="div"
+                                                sx={{flexGrow: 1,}}
+                                                fontWeight={600} letterSpacing={1}>
+
+                                        Student helper app
+                                    </Typography>
+                                </Box>
+
                                 <Box marginLeft={'auto'}>
                                     <IconButton
                                         onClick={toggleSettingsDrawer}
@@ -93,6 +103,7 @@ export const Layout = () => {
                                     </IconButton>
                                 </Box>
                             </Toolbar>
+
                         </AppBar>
                         <MainSidebar toggleDrawer={toggleMenuDrawer} open={openMenu}/>
                     </Paper>
