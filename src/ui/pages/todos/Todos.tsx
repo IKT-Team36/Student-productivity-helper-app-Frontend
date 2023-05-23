@@ -165,11 +165,10 @@ export const Todos = () => {
                                        minHeight={'300px'}
                                        maxHeight={'300px'}
                                        mt={10}
-                                       sx={{zIndex: '9000 !important'}}
                         >
                             <Box minHeight={'300px'}
                                  maxHeight={'300px'}
-                                 sx={{border: '4px dotted', borderColor: 'primary.main', zIndex: '8000 !important'}}
+                                 sx={{border: '4px dotted', borderColor: 'primary.main'}}
                                  display={'flex'}
                                  alignItems={'center'}
                                  justifyContent={'center'}
@@ -213,11 +212,10 @@ export const Todos = () => {
                                        minHeight={'300px'}
                                        maxHeight={'300px'}
                                        mt={10}
-                                       sx={{zIndex: '9000 !important'}}
                         >
                             <Box minHeight={'300px'}
                                  maxHeight={'300px'}
-                                 sx={{border: '4px dotted', borderColor: 'primary.main', zIndex: '8000 !important'}}
+                                 sx={{border: '4px dotted', borderColor: 'primary.main'}}
                                  display={'flex'}
                                  alignItems={'center'}
                                  justifyContent={'center'}
@@ -262,7 +260,6 @@ export const Todos = () => {
                                        minHeight={'300px'}
                                        maxHeight={'300px'}
                                        mt={10}
-                                       sx={{zIndex: '9000 !important'}}
                         >
                             <Box minHeight={'300px'}
                                  maxHeight={'300px'}
