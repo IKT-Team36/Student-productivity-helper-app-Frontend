@@ -11,7 +11,39 @@ import {
 const TodoContainer = styled(Box)<{
     dragover: boolean
 }>(({theme, dragover}) => ({
-    backgroundColor: !dragover ? alpha(theme.palette.primary.main, 0.3) : alpha(theme.palette.primary.main, 0.5)
+    backgroundColor: !dragover ? alpha(theme.palette.primary.main, 0.3) : alpha(theme.palette.primary.main, 0.5),
+    zIndex: 1,
+    position: 'relative',
+    '& .MuiSvgIcon-root': {
+        fontSize: '50px',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        marginBottom: 'auto',
+        marginTop: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        zIndex: '-1 !important',
+        border: 'none'
+    },
+    ...(dragover && {
+        '& .MuiSvgIcon-root': {
+            fontSize: '90px',
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            marginBottom: 'auto',
+            marginTop: 'auto',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            zIndex: '-1 !important',
+            border: 'none'
+        },
+    })
 }))
 
 const ItemStyled = styled(Box)(({theme}) => ({
@@ -24,24 +56,6 @@ const ItemStyled = styled(Box)(({theme}) => ({
         fontSize: '12px !important',
     },
     cursor: 'pointer'
-
-}))
-
-const IconDrop = styled(Box)<{
-    dragover: boolean
-}>(({dragover}) => ({
-    zIndex: '-100 !important',
-    '& .MuiSvgIcon-root': {
-        zIndex: '-99 !important',
-    },
-    ...(dragover && {
-        '& .MuiSvgIcon-root': {
-            width: '3em',
-            height: '3em',
-            padding: '0px',
-            zIndex: '-96 !important',
-        }
-    })
 
 }))
 
@@ -161,11 +175,7 @@ export const Todos = () => {
                                  justifyContent={'center'}
                             >
                                 <Box justifyContent={'center'}>
-                                    <IconDrop dragover={dragoverTodo} sx={{textAlign: 'center'}}>
-                                        <PendingOutlined color={'primary'}/>
-                                    </IconDrop>
-                                    <Typography textAlign={'center'} variant={'subtitle2'} color={'primary'}
-                                                fontWeight={'bold'}>Set status TO DO</Typography>
+                                    <PendingOutlined color={'primary'}/>
                                 </Box>
                             </Box>
                         </TodoContainer>
@@ -213,11 +223,7 @@ export const Todos = () => {
                                  justifyContent={'center'}
                             >
                                 <Box justifyContent={'center'}>
-                                    <IconDrop dragover={dragoverInProgress} sx={{textAlign: 'center'}}>
-                                        <RotateRightRounded color={'primary'}/>
-                                    </IconDrop>
-                                    <Typography textAlign={'center'} variant={'subtitle2'} color={'primary'}
-                                                fontWeight={'bold'}>Set status IN PROGRESS</Typography>
+                                    <RotateRightRounded color={'primary'}/>
                                 </Box>
                             </Box>
                         </TodoContainer>
@@ -260,17 +266,13 @@ export const Todos = () => {
                         >
                             <Box minHeight={'300px'}
                                  maxHeight={'300px'}
-                                 sx={{border: '4px dotted', borderColor: 'primary.main', zIndex: '8000 !important'}}
+                                 sx={{border: '4px dotted', borderColor: 'primary.main'}}
                                  display={'flex'}
                                  alignItems={'center'}
                                  justifyContent={'center'}
                             >
-                                <Box justifyContent={'center'}>
-                                    <IconDrop dragover={dragoverDone} sx={{textAlign: 'center'}}>
-                                        <CheckCircleOutlineRounded color={'primary'}/>
-                                    </IconDrop>
-                                    <Typography textAlign={'center'} variant={'subtitle2'} color={'primary'}
-                                                fontWeight={'bold'}>Set status DONE</Typography>
+                                <Box textAlign={'center'}>
+                                    <CheckCircleOutlineRounded color={'primary'}/>
                                 </Box>
                             </Box>
                         </TodoContainer>
