@@ -28,9 +28,10 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
 interface Props extends PropsWithChildren {
     title?: string
     showBreadcrumbs?: boolean
+    action?: ReactElement
 }
 
-export const ScreenLayout: FC<Props> = ({children, title, showBreadcrumbs = true}) => {
+export const ScreenLayout: FC<Props> = ({children, title, showBreadcrumbs = true, action}) => {
     const location = useLocation();
 
     const displayBreadcrumbs = (): ReactElement => {
@@ -68,13 +69,23 @@ export const ScreenLayout: FC<Props> = ({children, title, showBreadcrumbs = true
 
     return (
         <ScreenBody>
-            {title && <Typography variant={'h5'} color={'primary'} fontWeight={500}>{title}</Typography>}
+            {(title !== undefined || action !== undefined) &&
+                <Box flexGrow={1} display={'flex'} justifyContent={'space-between'} height={'40px'}
+                     alignItems={'center'}>
+                    {title && <Typography variant={'h5'} color={'primary'} fontWeight={500}>{title}</Typography>}
+                    {action && <Box mt={1}>{action}</Box>}
+                </Box>
+            }
+
             {showBreadcrumbs &&
                 <Box sx={{height: '30px'}}>
                     {displayBreadcrumbs()}
                 </Box>
             }
-            {children}
+
+            <Box mt={1}>
+                {children}
+            </Box>
         </ScreenBody>
     )
 }
