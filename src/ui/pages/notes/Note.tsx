@@ -1,25 +1,73 @@
 import React from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
-import {Box, Button} from "@mui/material";
+import {
+    Box, Button, TextField, Typography, styled, Dialog, DialogTitle, DialogContent, DialogActions
+} from "@mui/material";
 import {AddRounded} from "@mui/icons-material";
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
+import {DateRangePicker} from "@mui/x-date-pickers-pro/DateRangePicker";
+
+const TextFieldStyled = styled(TextField)(() => ({
+    '& #outlined-multiline-static-label, #standard-basic-label': {
+        color: '#dfdfdf'
+    }
+}));
+const DatepPickerStyled = styled(DateRangePicker)(() => ({
+    '& .MuiFormControl-root label': {
+        color: '#dfdfdf'
+    }
+}));
+
 
 export const Notes = () => {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const createButton = (
-        <Button variant="outlined" startIcon={<AddRounded/>}>Create new</Button>
+        <Button variant="outlined" startIcon={<AddRounded/>} onClick={handleOpen}>Create new</Button>
     )
 
     return (
         <ScreenLayout title={'Notes'} action={createButton}>
-            <Box textAlign={'justify'}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar nunc eu mi volutpat, eu
-                tincidunt lectus interdum. Fusce interdum dolor eu felis placerat, sit amet aliquet enim aliquam.
-                Aliquam quis ultricies erat, sit amet pellentesque quam. Vestibulum volutpat auctor quam, id blandit
-                ipsum vestibulum nec. Nunc accumsan egestas est. Nunc in augue neque. Proin nec enim fringilla,
-                imperdiet libero vel, tristique neque. Ut facilisis mi et orci porta, ut auctor mi fringilla. Sed
-                pretium leo at ligula dictum, tincidunt imperdiet arcu tristique. Vivamus suscipit augue eget ex
-                suscipit, eget suscipit orci vehicula. Vivamus ultrices imperdiet eros, id tempor quam gravida non. In
-                mauris sapien, tempus et nisi vel, vestibulum consequat felis. Quisque volutpat rutrum quam vitae
-                suscipit.
+            <Box>
+                <Dialog onClose={handleClose} open={open}>
+                    <DialogTitle>Create new note</DialogTitle>
+                    <DialogContent>
+                        <Box component="form" noValidate autoComplete="off">
+                            <TextFieldStyled sx={{width: '50%'}} id="standard-basic" label="Title"
+                                             variant="outlined"/>
+                            <Typography id="modal-modal-description" sx={{mt: 4}}>
+                                <TextFieldStyled
+                                    id="outlined-multiline-static"
+                                    label="Description"
+                                    multiline
+                                    rows={14}
+                                    variant="outlined"
+                                    sx={{width: '100%'}}/>
+                            </Typography>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
+                                    <DatepPickerStyled sx={{mt: 3}} slotProps={{
+                                        fieldSeparator: {
+                                            sx: {
+                                                opacity: 0.5, color: 'gray'
+                                            }
+                                        }
+                                    }}/>
+                                </DemoContainer>
+                            </LocalizationProvider>
+                            <DialogActions sx={{mt: 3, p: 0}}>
+                                <Button variant="outlined"
+                                        onClick={handleClose}>Close</Button>
+                                <Button variant="contained"
+                                        onClick={handleClose}>Save</Button>
+                            </DialogActions>
+                        </Box>
+                    </DialogContent>
+                </Dialog>
             </Box>
         </ScreenLayout>
     )
