@@ -48,9 +48,9 @@ export const Notes = () => {
                                     variant="outlined"
                                     sx={{width: '100%'}}/>
                             </Typography>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
-                                    <DatepPickerStyled sx={{mt: 3}} slotProps={{
+                                    <DatepPickerStyled sx={{mt: 4}} slotProps={{
                                         fieldSeparator: {
                                             sx: {
                                                 opacity: 0.5, color: 'gray'
