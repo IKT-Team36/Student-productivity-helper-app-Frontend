@@ -3,7 +3,7 @@ import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {
     Box, Button, TextField, Typography, styled, Dialog, DialogTitle, DialogContent, DialogActions
 } from "@mui/material";
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import {AddRounded, ControlPoint} from "@mui/icons-material";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
@@ -25,7 +25,13 @@ export const Notes = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    return (<ScreenLayout title={'Notes'}>
+
+    const createButton = (
+        <Button variant="outlined" startIcon={<AddRounded/>}>Create new</Button>
+    )
+
+    return (
+        <ScreenLayout title={'Notes'} action={createButton}>
             <Box>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Create New Note
@@ -33,7 +39,7 @@ export const Notes = () => {
                 <Box textAlign={'center'} border={"2px solid lightgray"} borderRadius={"10px"} width={"400px"}
                      height={"420px"}>
                     <Button onClick={handleOpen} sx={{position: 'relative', py: '165px', px: '155px'}}>
-                        <ControlPointIcon style={{opacity: '20%'}} sx={{fontSize: 84}}/>
+                        <ControlPoint style={{opacity: '20%'}} sx={{fontSize: 84}}/>
                     </Button>
                     <Dialog onClose={handleClose} open={open}>
                         <DialogTitle>Create new note</DialogTitle>

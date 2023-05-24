@@ -25,6 +25,7 @@ interface ThemeModeContextValue {
     mode: PaletteMode
     color: PaletteColorOptions
     setThemeMode: () => void
+    setSystemMode: () => void
     setThemeColor: (color: PaletteColorOptions) => void,
     colorPalette: ColorPalette[]
     defaultColor: PaletteColorOptions
@@ -34,6 +35,7 @@ const defaultThemeModeContextValue: ThemeModeContextValue = {
     mode: 'light',
     color: blueGrey,
     setThemeMode: () => null,
+    setSystemMode: () => null,
     setThemeColor: () => null,
     colorPalette: [],
     defaultColor: blueGrey
@@ -69,6 +71,11 @@ export const ThemeModeProvider: FC<PropsWithChildren> = ({children}): ReactEleme
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
     }
 
+    const setSystemMode = (): void => {
+        const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+        setMode(prefersDarkMode ? 'dark' : 'light')
+    }
+
     const setThemeColor = (colorSelected: PaletteColorOptions): void => {
         if (colorSelected !== color) {
             setColor(colorSelected)
@@ -81,6 +88,7 @@ export const ThemeModeProvider: FC<PropsWithChildren> = ({children}): ReactEleme
             mode,
             color,
             setThemeMode,
+            setSystemMode,
             setThemeColor,
             colorPalette,
             defaultColor

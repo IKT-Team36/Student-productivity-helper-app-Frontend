@@ -2,29 +2,27 @@ import React from 'react'
 import {
     AppBar as MuiAppBar,
     Box, ClickAwayListener,
-    Drawer as MuiDrawer,
     IconButton, Paper,
     styled,
-    Toolbar,
+    Toolbar, Typography, useMediaQuery, useTheme,
 } from "@mui/material";
 import {Menu, Settings} from "@mui/icons-material";
 import {Outlet} from "react-router-dom";
 import {useState} from "react";
 import {MainSidebar} from "@src/ui/layout/sidebar/MainSidebar";
-import {SettingsSidebar} from "@src/ui/layout/appbar-menu/SettingsSidebar";
-
-const drawerOpenWidth = 230;
-const drawerCloseWidthSmallScreen = 60;
-const drawerCloseWidthBigScreen = 70;
+import {SettingsSidebar} from "@src/ui/layout/sidebar/SettingsSidebar";
+import {DRAWER_CLOSE_WIDTH_LG, DRAWER_OPEN_WIDTH} from "@src/ui-shared/constants/Constants";
 
 const MainContent = styled(Box)<{ open: boolean }>(({theme, open}) => ({
     width: '100vh',
     position: 'relative',
     marginTop: theme.spacing(7),
     // match with width of drawer when open/closed
-    marginLeft: open ? `${drawerOpenWidth}px` : `${drawerCloseWidthBigScreen}px`,
-    [theme.breakpoints.down('sm')]: {
-        marginLeft: open ? `${drawerOpenWidth}px` : `${drawerCloseWidthSmallScreen}px`
+    marginLeft: open ? `${DRAWER_OPEN_WIDTH}px` : `${DRAWER_CLOSE_WIDTH_LG}px`,
+    [theme.breakpoints.down('md')]: {
+        marginLeft: open ? `${DRAWER_OPEN_WIDTH}px` : `0px`,
+        // prevent horizontal scrollbar on mobile
+        overflow: 'scroll',
     },
     flexGrow: 1,
 }))
@@ -38,8 +36,8 @@ const AppBar = styled(MuiAppBar)<{
         duration: theme.transitions.duration.leavingScreen,
     }),
     ...(open && {
-        marginLeft: `${drawerOpenWidth}px`,
-        width: `calc(100% - ${drawerOpenWidth}px)`,
+        marginLeft: `${DRAWER_OPEN_WIDTH}px`,
+        width: `calc(100% - ${DRAWER_OPEN_WIDTH}px)`,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
@@ -47,38 +45,10 @@ const AppBar = styled(MuiAppBar)<{
     }),
 }));
 
-const Drawer = styled(MuiDrawer)<{
-    open: boolean,
-}>(
-    ({theme, open}) => ({
-        '& .MuiDrawer-paper': {
-            whiteSpace: 'nowrap',
-            // match with width of margin left of main content
-            width: `${drawerOpenWidth}px`,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            overflowX: 'hidden',
-            boxSizing: 'border-box',
-            ...(!open && {
-                overflowX: 'hidden',
-                transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
-                // match with width of margin left of main content
-                width: `${drawerCloseWidthBigScreen}px`,
-                [theme.breakpoints.down('sm')]: {
-                    width: `${drawerCloseWidthSmallScreen}px`,
-                },
-            }),
-        },
-    }),
-);
-
-
 export const Layout = () => {
+    const theme = useTheme()
+    const smallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);
 
@@ -101,18 +71,23 @@ export const Layout = () => {
     return (
         <Box sx={{display: 'flex'}}>
             <Box sx={{display: 'flex'}}>
-                <ClickAwayListener onClickAway={closeMenuDrawer}>
+                <ClickAwayListener onClickAway={!smallScreen ? closeMenuDrawer : () => undefined}>
                     <Paper elevation={0}>
-                        <AppBar position="fixed" open={openMenu}>
+                        <AppBar position="fixed" open={smallScreen ? false : openMenu}>
                             <Toolbar>
-                                {!openMenu &&
+                                {(smallScreen || !openMenu) && (
                                     <IconButton
                                         onClick={toggleMenuDrawer}
                                         edge="start"
                                         sx={{mr: 2, color: 'white'}}>
                                         <Menu/>
                                     </IconButton>
-                                }
+                                )}
+                                <Typography variant="subtitle1"
+                                            fontWeight={500} letterSpacing={1}>
+                                    Student helper app
+                                </Typography>
+
                                 <Box marginLeft={'auto'}>
                                     <IconButton
                                         onClick={toggleSettingsDrawer}
@@ -123,24 +98,16 @@ export const Layout = () => {
                                     </IconButton>
                                 </Box>
                             </Toolbar>
-                        </AppBar>
 
-                        <Drawer variant="permanent" open={openMenu}>
-                            <MainSidebar toggleDrawer={toggleMenuDrawer} open={openMenu}/>
-                        </Drawer>
+                        </AppBar>
+                        <MainSidebar toggleDrawer={toggleMenuDrawer} open={openMenu}/>
                     </Paper>
                 </ClickAwayListener>
 
-                <MuiDrawer
-                    anchor={"right"}
-                    open={openSettings}
-                    onClose={toggleSettingsDrawer}
-                >
-                    <SettingsSidebar/>
-                </MuiDrawer>
+                <SettingsSidebar open={openSettings} toggleDrawer={toggleSettingsDrawer}/>
             </Box>
 
-            <MainContent open={openMenu}>
+            <MainContent open={smallScreen ? false : openMenu}>
                 <Outlet/>
             </MainContent>
         </Box>

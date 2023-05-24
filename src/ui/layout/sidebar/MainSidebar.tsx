@@ -1,23 +1,53 @@
 import {
     Box,
-    Divider,
+    Divider, Drawer,
     Grid,
     IconButton,
     ListSubheader,
     styled,
-    Toolbar, Tooltip, Typography
+    Toolbar, Tooltip, Typography, useMediaQuery, useTheme
 } from "@mui/material";
 import {ChevronLeft} from "@mui/icons-material";
 import React, {FC, ReactElement} from "react";
 import {ROUTES} from "@src/routing/Routes";
-import {ListItemLink} from "@src/ui/layout/sidebar/ListItemLink";
+import {ListItemLink} from "@src/ui-shared/link/ListItemLink";
+import {DRAWER_CLOSE_WIDTH_LG, DRAWER_OPEN_WIDTH} from "@src/ui-shared/constants/Constants";
 
 const StyledListSubheader = styled(ListSubheader)(({theme}) => ({
     lineHeight: theme.spacing(2),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    backgroundColor: 'transparent'
 }))
+
+const StyledDrawer = styled(Drawer)<{
+    open: boolean,
+}>(
+    ({theme, open}) => ({
+        '& .MuiDrawer-paper': {
+            whiteSpace: 'nowrap',
+            // match with width of margin left of main content
+            width: `${DRAWER_OPEN_WIDTH}px`,
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+            overflowX: 'hidden',
+            boxSizing: 'border-box',
+            ...(!open && {
+                overflowX: 'hidden',
+                transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                }),
+                // match with width of margin left of main content
+                width: `${DRAWER_CLOSE_WIDTH_LG}px`,
+            }),
+        },
+    }),
+);
+
 
 interface Prop {
     open: boolean
@@ -25,12 +55,14 @@ interface Prop {
 }
 
 export const MainSidebar: FC<Prop> = ({toggleDrawer, open}) => {
+    const theme = useTheme()
+    const smallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
     const renderMenuSectionLabel = (
         sectionLabel: string | undefined,
         prevSectionLabel: string | undefined,
     ): ReactElement | null => {
-        if (sectionLabel && sectionLabel !== prevSectionLabel && open) {
+        if (sectionLabel && sectionLabel !== prevSectionLabel && (open || smallScreen)) {
             return <StyledListSubheader color="primary">{sectionLabel}</StyledListSubheader>
         }
         return null
@@ -49,7 +81,9 @@ export const MainSidebar: FC<Prop> = ({toggleDrawer, open}) => {
         const prevSectionLabel = ROUTES[index - 1] ? ROUTES[index - 1].sectionLabel : undefined
         return (
             <Grid key={path}>
-                <Tooltip arrow title={!open && <Typography variant="subtitle2" fontWeight={'lighter'}>{label}</Typography>} placement={'right'}>
+                <Tooltip arrow
+                         title={!open && <Typography variant="subtitle2" fontWeight={'lighter'}>{label}</Typography>}
+                         placement={'right'}>
                     <Box>
                         {renderMenuSectionLabel(sectionLabel, prevSectionLabel)}
                         {renderListItemLink(label, path, icon)}
@@ -58,7 +92,8 @@ export const MainSidebar: FC<Prop> = ({toggleDrawer, open}) => {
             </Grid>
         )
     })
-    return (
+
+    const displayContent = (
         <>
             <Toolbar
                 sx={{
@@ -74,6 +109,23 @@ export const MainSidebar: FC<Prop> = ({toggleDrawer, open}) => {
             </Toolbar>
             <Divider/>
             {displayMenu}
+        </>
+    )
+
+    return (
+        <>
+            {smallScreen ?
+                <Drawer
+                    anchor={"left"}
+                    open={open}
+                    onClose={toggleDrawer}
+                >
+                    {displayContent}
+                </Drawer> :
+                <StyledDrawer variant="permanent" open={open}>
+                    {displayContent}
+                </StyledDrawer>
+            }
         </>
     )
 }

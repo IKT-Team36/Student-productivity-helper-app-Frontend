@@ -3,7 +3,7 @@ import {Route, Routes, useLocation} from 'react-router-dom'
 import {ReactElement, useEffect} from "react";
 import {ROUTES, RoutesList} from "./Routes";
 import {Layout} from "@src/ui/layout/main-layout/Layout";
-import {NotFound} from "@src/ui/pages/NotFound";
+import {NotFound} from "@src/ui/pages/not-found/NotFound";
 
 const mapRoutes = (routes: RoutesList): ReactElement[] => {
     return Object.values(routes).map(({path, Component}) => {

@@ -1,10 +1,16 @@
 import React from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
-import {Box} from "@mui/material";
+import {Box, Button} from "@mui/material";
+import {AddRounded} from "@mui/icons-material";
 
-export const Home = () => {
+export const Courses = () => {
+
+    const createButton = (
+        <Button variant="outlined" startIcon={<AddRounded/>}>Create new</Button>
+    )
+
     return (
-        <ScreenLayout title={'Home'}>
+        <ScreenLayout title={'Courses'} action={createButton}>
             <Box textAlign={'justify'}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar nunc eu mi volutpat, eu
                 tincidunt lectus interdum. Fusce interdum dolor eu felis placerat, sit amet aliquet enim aliquam.
