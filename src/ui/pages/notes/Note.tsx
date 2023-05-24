@@ -34,10 +34,10 @@ export const Notes = () => {
         <ScreenLayout title={'Notes'} action={createButton}>
             <Box>
                 <Dialog onClose={handleClose} open={open}>
-                    <DialogTitle>Create new note</DialogTitle>
+                    <DialogTitle color={'primary'}>Create new note</DialogTitle>
                     <DialogContent>
                         <Box component="form" noValidate autoComplete="off">
-                            <TextFieldStyled sx={{width: '50%'}} id="standard-basic" label="Title"
+                            <TextFieldStyled sx={{width: '50%', mt: 1}} id="standard-basic" label="Title"
                                              variant="outlined"/>
                             <Typography id="modal-modal-description" sx={{mt: 4}}>
                                 <TextFieldStyled
@@ -62,7 +62,7 @@ export const Notes = () => {
                             <DialogActions sx={{mt: 3, p: 0}}>
                                 <Button variant="outlined"
                                         onClick={handleClose}>Close</Button>
-                                <Button variant="contained"
+                                <Button variant="contained" sx={{width: '30%'}}
                                         onClick={handleClose}>Save</Button>
                             </DialogActions>
                         </Box>
