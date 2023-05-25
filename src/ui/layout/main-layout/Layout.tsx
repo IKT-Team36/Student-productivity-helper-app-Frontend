@@ -4,14 +4,15 @@ import {
     Box, ClickAwayListener,
     IconButton, Paper,
     styled,
-    Toolbar, Typography, useMediaQuery, useTheme, Popover
+    Toolbar, Typography, useMediaQuery, useTheme
 } from "@mui/material";
-import {Menu, Settings, AccountCircle, LogoutOutlined} from "@mui/icons-material";
+import {Menu, Settings, AccountCircle} from "@mui/icons-material";
 import {Outlet} from "react-router-dom";
 import {useState} from "react";
 import {MainSidebar} from "@src/ui/layout/sidebar/MainSidebar";
 import {SettingsSidebar} from "@src/ui/layout/sidebar/SettingsSidebar";
 import {DRAWER_CLOSE_WIDTH_LG, DRAWER_OPEN_WIDTH} from "@src/ui-shared/constants/Constants";
+import {ProfileSidebar} from "@src/ui/layout/sidebar/ProfileSidebar";
 
 const MainContent = styled(Box)<{ open: boolean }>(({theme, open}) => ({
     width: '100vh',
@@ -51,10 +52,12 @@ export const Layout = () => {
 
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);
+    const [openProfile, setOpenProfile] = useState<boolean>(false);
 
     const toggleMenuDrawer = () => {
         setOpenMenu(!openMenu);
         setOpenSettings(false)
+        setOpenProfile(false)
     };
 
     const closeMenuDrawer = () => {
@@ -66,20 +69,14 @@ export const Layout = () => {
     const toggleSettingsDrawer = () => {
         setOpenSettings(!openSettings);
         setOpenMenu(false)
+        setOpenProfile(false)
     };
 
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+    const toggleProfileDrawer = () => {
+        setOpenProfile(!openProfile);
+        setOpenSettings(false);
+        setOpenMenu(false)
     };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const openPop = Boolean(anchorEl);
-    const idPop = openPop ? 'simple-popover' : undefined;
 
     return (
         <Box sx={{display: 'flex'}}>
@@ -112,29 +109,12 @@ export const Layout = () => {
                                     </IconButton>
 
                                     <IconButton
-                                        onClick={handleClick}
+                                        onClick={toggleProfileDrawer}
                                         edge="end"
-                                        sx={{color: 'white'}}
+                                        sx={{color: 'white', ml: 2}}
                                     >
                                         <AccountCircle/>
                                     </IconButton>
-                                    <Popover
-                                        id={idPop}
-                                        open={openPop}
-                                        anchorEl={anchorEl}
-                                        onClose={handleClose}
-                                        anchorOrigin={{
-                                            vertical: 'bottom',
-                                            horizontal: 'right',
-                                        }}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                    >
-                                        <Typography sx={{ p: 2, fontSize:'20px' }}>Name Surname</Typography>
-                                        <IconButton  sx={{fontSize:'20px', float:'right', borderRadius:'10px', pl:'60px', pr:'20px'}} href={'/login'}>LogOut<LogoutOutlined /></IconButton>
-                                    </Popover>
                                 </Box>
                             </Toolbar>
                         </AppBar>
@@ -143,6 +123,7 @@ export const Layout = () => {
                 </ClickAwayListener>
 
                 <SettingsSidebar open={openSettings} toggleDrawer={toggleSettingsDrawer}/>
+                <ProfileSidebar open={openProfile} toggleDrawer={toggleProfileDrawer}/>
             </Box>
 
             <MainContent open={smallScreen ? false : openMenu}>
