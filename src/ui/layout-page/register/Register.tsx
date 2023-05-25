@@ -40,9 +40,6 @@ interface FormValues {
   phoneNumber: string;
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
-
 const validationSchema = yup.object({
   name: yup.string("Enter your name").required("Name is required"),
   surname: yup.string("Enter your surname").required("Surname is required"),
@@ -73,7 +70,6 @@ export const Register = (): ReactElement => {
       });
     
       return (
-        <ThemeProvider theme={defaultTheme}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
@@ -100,7 +96,7 @@ export const Register = (): ReactElement => {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="given-name"
-                      name="firstName"
+                      name="name"
                       required
                       fullWidth
                       id="firstName"
@@ -118,7 +114,7 @@ export const Register = (): ReactElement => {
                       fullWidth
                       id="lastName"
                       label="Last Name"
-                      name="lastName"
+                      name="surname"
                       autoComplete="family-name"
                       value={formik.values.surname}
                       onChange={formik.handleChange}
@@ -174,6 +170,5 @@ export const Register = (): ReactElement => {
               </Box>
             </Box>
           </Container>
-        </ThemeProvider>
       );
 }
