@@ -5,6 +5,7 @@ import {ROUTES, RoutesList} from "./Routes";
 import {Layout} from "@src/ui/layout/main-layout/Layout";
 import {NotFound} from "@src/ui/pages/not-found/NotFound";
 import {Login} from "@src/ui/layout-page/login/Login";
+import {Register} from "@src/ui/layout-page/register/Register";
 
 const mapRoutes = (routes: RoutesList): ReactElement[] => {
     return Object.values(routes).map(({path, Component}) => {
@@ -34,6 +35,7 @@ export const GenerateRoutes = (): ReactElement => {
                 <Route element={<NotFound/>} path="/*"/>
             </Route>
             <Route element={<Login/>} path="/login"/>
+            <Route element={<Register/>} path="/Register"/>
         </Routes>
     )
 }

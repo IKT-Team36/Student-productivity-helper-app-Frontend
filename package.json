@@ -17,10 +17,12 @@
     "@mui/x-date-pickers-pro": "^6.4.0",
     "@types/node": "^18.15.11",
     "dayjs": "^1.11.7",
+    "formik": "^2.2.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
-    "react-router-dom": "^6.10.0"
+    "react-router-dom": "^6.10.0",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
