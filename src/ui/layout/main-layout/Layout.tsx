@@ -51,7 +51,6 @@ export const Layout = () => {
 
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);
-    const [openUser, setOpenUser] = useState<boolean>(false);
 
     const toggleMenuDrawer = () => {
         setOpenMenu(!openMenu);
