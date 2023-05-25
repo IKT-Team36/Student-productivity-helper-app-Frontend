@@ -4,9 +4,9 @@ import {
     Box, ClickAwayListener,
     IconButton, Paper,
     styled,
-    Toolbar, Typography, useMediaQuery, useTheme,
+    Toolbar, Typography, useMediaQuery, useTheme, Popover
 } from "@mui/material";
-import {Menu, Settings} from "@mui/icons-material";
+import {Menu, Settings, AccountCircle, LogoutOutlined} from "@mui/icons-material";
 import {Outlet} from "react-router-dom";
 import {useState} from "react";
 import {MainSidebar} from "@src/ui/layout/sidebar/MainSidebar";
@@ -68,6 +68,19 @@ export const Layout = () => {
         setOpenMenu(false)
     };
 
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const openPop = Boolean(anchorEl);
+    const idPop = openPop ? 'simple-popover' : undefined;
+
     return (
         <Box sx={{display: 'flex'}}>
             <Box sx={{display: 'flex'}}>
@@ -86,6 +99,7 @@ export const Layout = () => {
                                 <Typography variant="subtitle1"
                                             fontWeight={500} letterSpacing={1}>
                                     Student helper app
+
                                 </Typography>
 
                                 <Box marginLeft={'auto'}>
@@ -96,9 +110,33 @@ export const Layout = () => {
                                     >
                                         <Settings/>
                                     </IconButton>
+
+                                    <IconButton
+                                        onClick={handleClick}
+                                        edge="end"
+                                        sx={{color: 'white'}}
+                                    >
+                                        <AccountCircle/>
+                                    </IconButton>
+                                    <Popover
+                                        id={idPop}
+                                        open={openPop}
+                                        anchorEl={anchorEl}
+                                        onClose={handleClose}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'right',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                    >
+                                        <Typography sx={{ p: 2, fontSize:'20px' }}>Name Surname</Typography>
+                                        <IconButton  sx={{fontSize:'20px', float:'right', borderRadius:'10px', pl:'60px', pr:'20px'}} href={'/login'}>LogOut<LogoutOutlined /></IconButton>
+                                    </Popover>
                                 </Box>
                             </Toolbar>
-
                         </AppBar>
                         <MainSidebar toggleDrawer={toggleMenuDrawer} open={openMenu}/>
                     </Paper>
