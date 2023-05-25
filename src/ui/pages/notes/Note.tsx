@@ -1,25 +1,13 @@
 import React from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {
-    Box, Button, TextField, Typography, styled, Dialog, DialogTitle, DialogContent, DialogActions
+    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid
 } from "@mui/material";
 import {AddRounded} from "@mui/icons-material";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
-import {DateRangePicker} from "@mui/x-date-pickers-pro/DateRangePicker";
-
-const TextFieldStyled = styled(TextField)(() => ({
-    '& #outlined-multiline-static-label, #standard-basic-label': {
-        color: '#dfdfdf'
-    }
-}));
-const DatepPickerStyled = styled(DateRangePicker)(() => ({
-    '& .MuiFormControl-root label': {
-        color: '#dfdfdf'
-    }
-}));
-
+import {DemoContainer, DemoItem} from '@mui/x-date-pickers/internals/demo';
+import {DateTimePicker} from "@mui/x-date-pickers";
 
 export const Notes = () => {
     const [open, setOpen] = React.useState(false);
@@ -36,36 +24,50 @@ export const Notes = () => {
                 <Dialog onClose={handleClose} open={open}>
                     <DialogTitle color={'primary'}>Create new note</DialogTitle>
                     <DialogContent>
-                        <Box component="form" noValidate autoComplete="off">
-                            <TextFieldStyled sx={{width: '50%', mt: 1}} id="standard-basic" label="Title"
-                                             variant="outlined"/>
-                            <Typography id="modal-modal-description" sx={{mt: 4}}>
-                                <TextFieldStyled
-                                    id="outlined-multiline-static"
+                        <Grid container spacing={2} mt={2}>
+                            <Grid item xs={12}>
+                                <TextField color={'primary'}
+                                           label="Title"
+                                           placeholder={'Title'}
+                                           variant="outlined"
+                                           fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
                                     label="Description"
                                     multiline
                                     rows={14}
                                     variant="outlined"
-                                    sx={{width: '100%'}}/>
-                            </Typography>
-                            <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
-                                    <DatepPickerStyled sx={{mt: 4}} slotProps={{
-                                        fieldSeparator: {
-                                            sx: {
-                                                opacity: 0.5, color: 'gray'
-                                            }
-                                        }
-                                    }}/>
-                                </DemoContainer>
-                            </LocalizationProvider>
-                            <DialogActions sx={{mt: 3, p: 0}}>
-                                <Button variant="outlined"
-                                        onClick={handleClose}>Close</Button>
-                                <Button variant="contained" sx={{width: '30%'}}
-                                        onClick={handleClose}>Save</Button>
-                            </DialogActions>
-                        </Box>
+                                    placeholder={'Description'}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
+                                        <DemoItem>
+                                            <DateTimePicker/>
+                                        </DemoItem>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
+                                        <DemoItem>
+                                            <DateTimePicker/>
+                                        </DemoItem>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                            </Grid>
+                        </Grid>
+                        <DialogActions sx={{mt: 3, p: 0}}>
+                            <Button variant="outlined"
+                                    onClick={handleClose}>Close</Button>
+                            <Button variant="contained" sx={{width: '30%'}}
+                                    onClick={handleClose}>Save</Button>
+                        </DialogActions>
                     </DialogContent>
                 </Dialog>
             </Box>

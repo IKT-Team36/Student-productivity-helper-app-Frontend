@@ -76,12 +76,8 @@ const themeOptionsLight: ThemeOptions = {
     palette: {
         mode: 'light',
         primary: DEFAULT_COLOR,
-        secondary: {
-            main: '#fff',
-        },
         text: {
             primary: '#000',
-            secondary: '#fff',
         }
     },
 }
