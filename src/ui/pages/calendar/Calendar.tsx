@@ -1,11 +1,12 @@
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, {Dayjs} from 'dayjs';
-import React, {useState} from "react";
+import React, {FC, useState} from "react";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateCalendar, DayCalendarSkeleton} from "@mui/x-date-pickers";
 import {styled} from "@mui/material";
 import {CalendarDay} from "@src/ui/pages/calendar/CalendarDay";
+import {Breadcrumb} from "@src/routing/Routes";
 
 const DateCalendarStyled = styled(DateCalendar)(({theme}) => ({
     width: '80%',
@@ -100,8 +101,11 @@ const DateCalendarStyled = styled(DateCalendar)(({theme}) => ({
     }
 }))
 
+interface Prop {
+    breadcrumbs: Breadcrumb[]
+}
 
-export const Calendar = () => {
+export const Calendar: FC<Prop> = ({breadcrumbs}) => {
     // state
     const [loadingCalendar, setLoadingCalendar] = useState<boolean>(false)
 
@@ -131,7 +135,7 @@ export const Calendar = () => {
     }
 
     return (
-        <ScreenLayout title={'Calendar'}>
+        <ScreenLayout title={'Calendar'} breadcrumbs={breadcrumbs}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendarStyled
                     defaultValue={initialValue}

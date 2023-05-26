@@ -1,16 +1,21 @@
-import React from 'react'
+import React, {FC} from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {Box, Button} from "@mui/material";
 import {AddRounded} from "@mui/icons-material";
+import {Breadcrumb} from "@src/routing/Routes";
 
-export const Courses = () => {
+interface Prop {
+    breadcrumbs: Breadcrumb[]
+}
+
+export const Courses: FC<Prop> = ({breadcrumbs}) => {
 
     const createButton = (
         <Button variant="outlined" startIcon={<AddRounded/>}>Create new</Button>
     )
 
     return (
-        <ScreenLayout title={'Courses'} action={createButton}>
+        <ScreenLayout title={'Courses'} action={createButton} breadcrumbs={breadcrumbs}>
             <Box textAlign={'justify'}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar nunc eu mi volutpat, eu
                 tincidunt lectus interdum. Fusce interdum dolor eu felis placerat, sit amet aliquet enim aliquam.

@@ -9,8 +9,10 @@ import {
 import {Home} from "@src/ui/pages/home/Home";
 import {Courses} from "@src/ui/pages/courses/Courses";
 import {Todos} from "@src/ui/pages/todos/Todos";
-import {Notes} from "@src/ui/pages/notes/Note";
+import {Notes} from "@src/ui/pages/notes/Notes";
 import {Calendar} from "@src/ui/pages/calendar/Calendar";
+
+export type Breadcrumb = Pick<RouteModel, 'path' | 'label'>
 
 export interface RouteModel {
     path: string
@@ -18,7 +20,7 @@ export interface RouteModel {
     label?: string
     sectionLabel?: string
     icon?: ReactElement
-    breadCrumbs?: RouteModel[]
+    breadCrumbs?: Breadcrumb[]
 }
 
 export interface RoutesList {
@@ -38,7 +40,7 @@ const CourseRoute: RouteModel = {
     Component: Courses,
     label: 'Courses',
     icon: <BookOutlined/>,
-    breadCrumbs: [HomeRoute]
+    breadCrumbs: [{path: HomeRoute.path, label: HomeRoute.label}]
 }
 
 const TodosRoute: RouteModel = {
@@ -46,7 +48,7 @@ const TodosRoute: RouteModel = {
     Component: Todos,
     label: 'Todos',
     icon: <ChecklistOutlined/>,
-    breadCrumbs: [HomeRoute, CourseRoute]
+    breadCrumbs: [{path: HomeRoute.path, label: HomeRoute.label}, {path: CourseRoute.path, label: CourseRoute.label}]
 }
 
 const NotesRoute: RouteModel = {
@@ -54,7 +56,7 @@ const NotesRoute: RouteModel = {
     Component: Notes,
     label: 'Notes',
     icon: <SpeakerNotesOutlined/>,
-    breadCrumbs: [HomeRoute, CourseRoute]
+    breadCrumbs: [{path: HomeRoute.path, label: HomeRoute.label}, {path: CourseRoute.path, label: CourseRoute.label}]
 }
 
 const CalendarRoute: RouteModel = {
@@ -62,7 +64,7 @@ const CalendarRoute: RouteModel = {
     Component: Calendar,
     label: 'Calendar',
     icon: <EventNoteRounded/>,
-    breadCrumbs: [HomeRoute, CourseRoute]
+    breadCrumbs: [{path: HomeRoute.path, label: HomeRoute.label}, {path: CourseRoute.path, label: CourseRoute.label}]
 }
 
 export const ROUTES: RoutesList = {
