@@ -27,9 +27,10 @@ export const Login = (): ReactElement => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                p: 5
             }}
         >
-            <Avatar sx={{m: 1}}>
+            <Avatar sx={{m: 1, backgroundColor: 'primary.main'}}>
                 <LockOutlinedIcon/>
             </Avatar>
             <Typography component="h1" variant="h5" color={'primary'}>

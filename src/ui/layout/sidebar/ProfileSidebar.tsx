@@ -25,14 +25,16 @@ export const ProfileSidebar: FC<Prop> = ({toggleDrawer, open}) => {
             open={open}
             onClose={toggleDrawer}
         >
-            <Box sx={{marginTop: 8, width: '300px'}}>
+            <Box sx={{marginTop: 8, width: '200px'}}>
                 <ProfileTitle mb={0}>
                     <Typography variant="h6" fontWeight={'normal'}>Profile</Typography>
                 </ProfileTitle>
 
                 <Divider/>
 
-                <Typography sx={{p: 3}} variant={'subtitle1'}>Name Surname</Typography>
+                <Box p={2} mt={2}>
+                    <Typography variant="subtitle1" fontWeight={'normal'}>Name Surname</Typography>
+                </Box>
                 <ListItemLink to={'/login'} icon={<LogoutOutlined/>} primary={'Logout'}/>
             </Box>
         </Drawer>
