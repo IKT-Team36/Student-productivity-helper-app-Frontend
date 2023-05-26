@@ -14,17 +14,14 @@ export const Notes = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const createButton = (
-        <Button variant="outlined" startIcon={<AddRounded/>} onClick={handleOpen}>Create new</Button>
-    )
+    const createButton = (<Button variant="outlined" startIcon={<AddRounded/>} onClick={handleOpen}>Create new</Button>)
 
-    return (
-        <ScreenLayout title={'Notes'} action={createButton}>
+    return (<ScreenLayout title={'Notes'} action={createButton}>
             <Box>
-                <Dialog onClose={handleClose} open={open}>
+                <Dialog onClose={handleClose} open={open} maxWidth={'sm'}>
                     <DialogTitle color={'primary'}>Create new note</DialogTitle>
-                    <DialogContent>
-                        <Grid container spacing={2} mt={2}>
+                    <DialogContent dividers>
+                        <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField color={'primary'}
                                            label="Title"
@@ -62,15 +59,14 @@ export const Notes = () => {
                                 </LocalizationProvider>
                             </Grid>
                         </Grid>
-                        <DialogActions sx={{mt: 3, p: 0}}>
-                            <Button variant="outlined"
-                                    onClick={handleClose}>Close</Button>
-                            <Button variant="contained" sx={{width: '30%'}}
-                                    onClick={handleClose}>Save</Button>
-                        </DialogActions>
                     </DialogContent>
+                    <DialogActions sx={{p: 3}}>
+                        <Button variant="outlined"
+                                onClick={handleClose}>Close</Button>
+                        <Button variant="contained" sx={{width: '30%'}}
+                                onClick={handleClose}>Save</Button>
+                    </DialogActions>
                 </Dialog>
             </Box>
-        </ScreenLayout>
-    )
+        </ScreenLayout>)
 }
