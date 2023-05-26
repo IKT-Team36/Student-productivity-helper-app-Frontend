@@ -46,7 +46,7 @@ export const Home = () => {
     const navigate = useNavigate()
 
     return (
-        <ScreenLayout showBreadcrumbs={false}>
+        <ScreenLayout>
             <PaperStyled elevation={0}>
                 <Grid container>
                     <Grid item sm={12} lg={7}>

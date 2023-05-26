@@ -4,7 +4,7 @@ import {Alert, Box, Typography} from "@mui/material";
 
 export const NotFound = () => {
     return (
-        <ScreenLayout showBreadcrumbs={false}>
+        <ScreenLayout>
             <Box display={'flex'} justifyContent={'center'}>
                 <Box>
                     <Typography variant={'h1'} textAlign={'center'}>404</Typography>
