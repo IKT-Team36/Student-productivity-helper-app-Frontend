@@ -21,7 +21,10 @@ const PaperStyled = styled(Paper)(({theme}) => ({
     color: theme.palette.text.primary,
     marginBottom: 40,
     [theme.breakpoints.down('md')]: {
-        textAlign: 'center'
+        '& h1': {
+            textAlign: 'center'
+        }
+
     }
 }))
 

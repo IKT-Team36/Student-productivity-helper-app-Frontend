@@ -4,14 +4,15 @@ import {
     Box, ClickAwayListener,
     IconButton, Paper,
     styled,
-    Toolbar, Typography, useMediaQuery, useTheme,
+    Toolbar, Typography, useMediaQuery, useTheme
 } from "@mui/material";
-import {Menu, Settings} from "@mui/icons-material";
+import {Menu, Settings, AccountCircle} from "@mui/icons-material";
 import {Outlet} from "react-router-dom";
 import {useState} from "react";
 import {MainSidebar} from "@src/ui/layout/sidebar/MainSidebar";
 import {SettingsSidebar} from "@src/ui/layout/sidebar/SettingsSidebar";
 import {DRAWER_CLOSE_WIDTH_LG, DRAWER_OPEN_WIDTH} from "@src/ui-shared/constants/Constants";
+import {ProfileSidebar} from "@src/ui/layout/sidebar/ProfileSidebar";
 
 const MainContent = styled(Box)<{ open: boolean }>(({theme, open}) => ({
     width: '100vh',
@@ -51,10 +52,12 @@ export const Layout = () => {
 
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);
+    const [openProfile, setOpenProfile] = useState<boolean>(false);
 
     const toggleMenuDrawer = () => {
         setOpenMenu(!openMenu);
         setOpenSettings(false)
+        setOpenProfile(false)
     };
 
     const closeMenuDrawer = () => {
@@ -65,6 +68,13 @@ export const Layout = () => {
 
     const toggleSettingsDrawer = () => {
         setOpenSettings(!openSettings);
+        setOpenMenu(false)
+        setOpenProfile(false)
+    };
+
+    const toggleProfileDrawer = () => {
+        setOpenProfile(!openProfile);
+        setOpenSettings(false);
         setOpenMenu(false)
     };
 
@@ -86,6 +96,7 @@ export const Layout = () => {
                                 <Typography variant="subtitle1"
                                             fontWeight={500} letterSpacing={1}>
                                     Student helper app
+
                                 </Typography>
 
                                 <Box marginLeft={'auto'}>
@@ -96,15 +107,23 @@ export const Layout = () => {
                                     >
                                         <Settings/>
                                     </IconButton>
+
+                                    <IconButton
+                                        onClick={toggleProfileDrawer}
+                                        edge="end"
+                                        sx={{color: 'white', ml: 2}}
+                                    >
+                                        <AccountCircle/>
+                                    </IconButton>
                                 </Box>
                             </Toolbar>
-
                         </AppBar>
                         <MainSidebar toggleDrawer={toggleMenuDrawer} open={openMenu}/>
                     </Paper>
                 </ClickAwayListener>
 
                 <SettingsSidebar open={openSettings} toggleDrawer={toggleSettingsDrawer}/>
+                <ProfileSidebar open={openProfile} toggleDrawer={toggleProfileDrawer}/>
             </Box>
 
             <MainContent open={smallScreen ? false : openMenu}>
