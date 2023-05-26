@@ -4,12 +4,12 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-
+import { Link } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const Login = (): ReactElement => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -72,12 +72,18 @@ export const Login = (): ReactElement => {
                 </Button>
                 <Grid container>
                     <Grid item xs>
-                        <Link href="#" variant="body2">
+                        <Link underline={'hover'}
+                              to={'/home'}
+                              component={RouterLink as any}
+                              variant="body2" textAlign={'left'} display={'flex'} justifyContent={'start'}>
                             Forgot password?
                         </Link>
                     </Grid>
-                    <Grid item>
-                        <Link href="#" variant="body2">
+                    <Grid item xs>
+                        <Link underline={'hover'}
+                               to={'/home'}
+                               component={RouterLink as any}
+                               variant="body2" textAlign={'right'} display={'flex'} justifyContent={'end'}>
                             {"Don't have an account? Register"}
                         </Link>
                     </Grid>
