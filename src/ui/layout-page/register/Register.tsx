@@ -20,14 +20,14 @@ interface FormValues {
 }
 
 const validationSchema = yup.object({
-  name: yup.string("Enter your name").required("Name is required"),
-  surname: yup.string("Enter your surname").required("Surname is required"),
+  name: yup.string().required("Name is required"),
+  surname: yup.string().required("Surname is required"),
   email: yup
-    .string("Enter your email")
+    .string()
     .email("Enter a valid email")
     .required("Email is required"),
   password: yup
-    .string("Enter your password")
+    .string()
     .min(8, "Password should be of minimum 8 characters length")
     .required("Password is required"),
 });
