@@ -1,7 +1,8 @@
 import React, {FC, useEffect, useState} from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {
-    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid, IconButton, CircularProgress
+    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid, IconButton, CircularProgress,
+    Card, CardContent, CardActions
 } from "@mui/material";
 import {AddRounded} from "@mui/icons-material";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
@@ -74,18 +75,26 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
 
     return (<ScreenLayout title={'Notes'} action={createButton} breadcrumbs={breadcrumbs}>
         {loading ? <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <CircularProgress/>
-        </Box> : <Box>
-            {profile.map(profiler => <Box key={profiler?.noteId} sx={{mr: 3}}>
-                <IconButton sx={{borderRadius: '10px', scale: '50%'}}>N. {profiler?.noteId}</IconButton>
-                <Box display={"inline-block"} width={'70%'}>
-                    {profiler?.noteContent}
-                </Box>
-                <br/>
-                {profiler?.dateModified}
-                <Button onClick={() => remove(profiler?.noteId)}>Delete</Button>
-            </Box>)}
-        </Box>}
+                <CircularProgress/>
+            </Box> :
+            <Box>
+                {profile.map(profiler =>
+                    <Card key={profiler?.noteId} sx={{mr: 3, mb:2}}>
+                        <CardContent sx={{display:'inline-block'}}>
+                            <IconButton sx={{borderRadius: '10px', scale: '50%'}}>N. {profiler?.noteId}</IconButton>
+                            <Box display={"inline-block"} width={'70%'}>
+                                {profiler?.noteContent}
+                            </Box>
+                            <Box sx={{ml:2}}>
+                                {profiler?.dateModified}
+                            </Box>
+                            <CardActions>
+                                <Button onClick={() => remove(profiler?.noteId)}>Delete</Button>
+                            </CardActions>
+                        </CardContent>
+                        <Box width={'10%'} height={'100px'} sx={{float:'inline-end'}} bgcolor={'primary.main'}></Box>
+                    </Card>)}
+            </Box>}
         <Box>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <Dialog onClose={handleClose} open={open} maxWidth={'sm'}>
