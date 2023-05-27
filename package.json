@@ -2,6 +2,7 @@
   "name": "student-productivity-helper-app",
   "private": true,
   "version": "0.0.0",
+  "proxy": "http://localhost:7762",
   "type": "module",
   "scripts": {
     "dev": "vite",
