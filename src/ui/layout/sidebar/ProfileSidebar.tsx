@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect} from "react";
-import {Box, Divider, Drawer, styled, Typography} from "@mui/material";
+import {Box, CircularProgress, Divider, Drawer, styled, Typography} from "@mui/material";
 import {ListItemLink} from "@src/ui-shared/link/ListItemLink";
 import {LogoutOutlined} from "@mui/icons-material";
 
@@ -35,35 +35,35 @@ export const ProfileSidebar: FC<Prop> = ({toggleDrawer, open}) => {
             .then(response => response.json())
             .then(data => {
                 setProfile(data);
-                //console.log(data)
                 setLoading(false);
             })
 
     }, []);
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
     return (
         <Drawer
             anchor={"right"}
             open={open}
             onClose={toggleDrawer}
         >
-            <Box sx={{marginTop: 8, width: '200px'}}>
-                <ProfileTitle mb={0}>
-                    <Typography variant="h6" fontWeight={'normal'}>Profile</Typography>
-                </ProfileTitle>
+            {loading ?
+                <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <CircularProgress/>
+                </Box> :
+                <Box sx={{marginTop: 8, width: '200px'}}>
+                    <ProfileTitle mb={0}>
+                        <Typography variant="h6" fontWeight={'normal'}>Profile</Typography>
+                    </ProfileTitle>
 
-                <Divider/>
+                    <Divider/>
 
-                <Box p={2} mt={2}>
-                    <Typography variant="subtitle1" fontWeight={'normal'}>
-                        {profile?.lastName} &nbsp; {profile?.firstName}
-                    </Typography>
-                </Box>
-                <ListItemLink to={'/login'} icon={<LogoutOutlined/>} primary={'Logout'}/>
-            </Box>
+                    <Box p={2} mt={2}>
+                        <Typography variant="subtitle1" fontWeight={'normal'}>
+                            {profile?.lastName} &nbsp; {profile?.firstName}
+                        </Typography>
+                    </Box>
+                    <ListItemLink to={'/login'} icon={<LogoutOutlined/>} primary={'Logout'}/>
+                </Box>}
         </Drawer>
     )
 }
