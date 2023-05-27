@@ -99,11 +99,11 @@ export const Layout = () => {
 
                                 </Typography>
 
-                                <Box marginLeft={'auto'}>
+                                <Box marginLeft={'auto'} marginRight={0}>
                                     <IconButton
                                         onClick={toggleSettingsDrawer}
                                         edge="end"
-                                        sx={{color: 'white'}}
+                                        sx={{color: 'white', borderRadius: 0, p: '18px'}}
                                     >
                                         <Settings/>
                                     </IconButton>
@@ -111,7 +111,7 @@ export const Layout = () => {
                                     <IconButton
                                         onClick={toggleProfileDrawer}
                                         edge="end"
-                                        sx={{color: 'white', ml: 2}}
+                                        sx={{color: 'white', borderRadius: 0, ml: 2, p: '18px'}}
                                     >
                                         <AccountCircle/>
                                     </IconButton>
