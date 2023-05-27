@@ -4,6 +4,7 @@ import {ThemeMode} from "./theme/ThemeMode";
 import {GenerateRoutes} from "./routing/GenerateRoutes";
 import {BrowserRouter} from "react-router-dom";
 import {CssBaseline} from "@mui/material";
+import {SnackbarProvider} from "@src/ui-shared/base/SnackbarProvider";
 
 function App() {
     return (
@@ -11,7 +12,9 @@ function App() {
             <ThemeMode>
                 <CssBaseline/>
                 <BrowserRouter>
-                    <GenerateRoutes/>
+                    <SnackbarProvider>
+                        <GenerateRoutes/>
+                    </SnackbarProvider>
                 </BrowserRouter>
             </ThemeMode>
         </ThemeModeProvider>

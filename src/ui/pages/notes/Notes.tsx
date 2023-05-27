@@ -1,7 +1,8 @@
 import React, {FC, useEffect, useState} from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {
-    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid, IconButton, CircularProgress
+    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid, IconButton, CircularProgress,
+    Card, CardContent, CardActions, Typography
 } from "@mui/material";
 import {AddRounded} from "@mui/icons-material";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
@@ -10,6 +11,7 @@ import {DemoContainer, DemoItem} from '@mui/x-date-pickers/internals/demo';
 import {DateTimePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {Breadcrumb} from "@src/routing/Routes";
+import {useSnackbar} from "@src/ui-shared/base/SnackbarProvider";
 
 interface Prop {
     breadcrumbs: Breadcrumb[]
@@ -24,6 +26,9 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
         noteContent: "", dateModified: dayjs().format('DD-MMMM-YYYY').toString(), user: 27, course: 29
 
     });
+
+    const {showSnackbar} = useSnackbar()
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -40,6 +45,10 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
                 setProfile(data);
                 setLoading(false);
             })
+            .catch(() => {
+                showSnackbar('Server not available', "error")
+                setLoading(false);
+            });
 
     }, [reloadFlag]);
 
@@ -48,7 +57,15 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
         await fetch(`http://localhost:7762/api/v1/note/delete/${id}`, {
             method: 'DELETE',
         })
-        setReloadFlag(prev => !prev)
+            .then(() => {
+                showSnackbar('Successfully deleted note', "success")
+                setReloadFlag(prev => !prev)
+                setLoading(false)
+            })
+            .catch(() => {
+                showSnackbar('Error deleting note', "error")
+                setLoading(false)
+            });
     }
 
     const handleSubmit = async (e: any) => {
@@ -59,8 +76,16 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
             method: 'POST', body: JSON.stringify(dataSubmit), headers: {
                 'Content-Type': 'application/json'
             }
-        });
-        setReloadFlag(prev => !prev)
+        })
+            .then(() => {
+                showSnackbar('Successfully created note', "success")
+                setReloadFlag(prev => !prev)
+                setLoading(false)
+            })
+            .catch(() => {
+                showSnackbar('Error creating note', "error")
+                setLoading(false)
+            });
     }
 
     function handleChange(e: any) {
@@ -74,18 +99,37 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
 
     return (<ScreenLayout title={'Notes'} action={createButton} breadcrumbs={breadcrumbs}>
         {loading ? <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <CircularProgress/>
-        </Box> : <Box>
-            {profile.map(profiler => <Box key={profiler?.noteId} sx={{mr: 3}}>
-                <IconButton sx={{borderRadius: '10px', scale: '50%'}}>N. {profiler?.noteId}</IconButton>
-                <Box display={"inline-block"} width={'70%'}>
-                    {profiler?.noteContent}
-                </Box>
-                <br/>
-                {profiler?.dateModified}
-                <Button onClick={() => remove(profiler?.noteId)}>Delete</Button>
-            </Box>)}
-        </Box>}
+                <CircularProgress/>
+            </Box> :
+            <Box>
+                {profile.map(profiler => {
+                        const date = new Date(profiler?.dateModified)
+                        return (
+                            <Card key={profiler?.noteId} sx={{mb: 2, position: 'relative'}} elevation={2}>
+                                <CardContent sx={{display: 'inline-block'}}>
+                                    <IconButton sx={{
+                                        borderRadius: '10px',
+                                        scale: '50%',
+                                        ml: '-9px'
+                                    }}>N. {profiler?.noteId}</IconButton>
+                                    <Box sx={{ml: 2}} width={'80%'}>
+                                        <Typography variant={'caption'}>{profiler?.noteContent} </Typography>
+                                    </Box>
+                                    <Box sx={{ml: 2}}>
+                                        {date.toDateString()}
+                                    </Box>
+                                    <CardActions>
+                                        <Button onClick={() => remove(profiler?.noteId)}>Delete</Button>
+                                    </CardActions>
+                                </CardContent>
+                                <Box width={'15%'} height={'100%'}
+                                     sx={{float: 'inline-end', position: 'absolute', right: '0', top: '0'}}
+                                     bgcolor={'primary.main'}></Box>
+                            </Card>
+                        )
+                    }
+                )}
+            </Box>}
         <Box>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <Dialog onClose={handleClose} open={open} maxWidth={'sm'}>

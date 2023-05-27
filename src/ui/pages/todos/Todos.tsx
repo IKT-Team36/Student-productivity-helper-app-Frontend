@@ -67,9 +67,9 @@ interface Prop {
 export const Todos: FC<Prop> = ({breadcrumbs}) => {
     type TaskType = 'todo' | 'in progress' | 'done'
 
-    const [taskTodo, setTaskTodo] = useState<string[]>(["Widget11231231231231231231231231231231231231asdasdasasdassassda", "Widget2"])
-    const [taskInProgress, setTaskInProgress] = useState<string[]>(["Widget3", "Widget4"])
-    const [taskDone, setTaskDone] = useState<string[]>(["Widget5", "Widget6"])
+    const [taskTodo, setTaskTodo] = useState<string[]>(["Complete Homework", "Finish writing script"])
+    const [taskInProgress, setTaskInProgress] = useState<string[]>(["Developing App", "Rewrite Codebase"])
+    const [taskDone, setTaskDone] = useState<string[]>(["Team Meeting", "Project Check"])
 
     const [dragoverTodo, setDragoverTodo] = useState<boolean>(false)
     const [dragoverInProgress, setDragoverInProgress] = useState<boolean>(false)
