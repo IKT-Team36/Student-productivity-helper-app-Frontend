@@ -1,6 +1,6 @@
 import React, {FC, ReactElement, useEffect, useState} from "react";
 import {PickersDay, PickersDayProps} from "@mui/x-date-pickers";
-import dayjs, {Dayjs} from "dayjs";
+import  {Dayjs} from "dayjs";
 import {
     Badge,
     Box,
@@ -74,7 +74,6 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [open, setOpen] = React.useState(false);
 
-    const [loading, setLoading] = useState(false);
     const [profile, setProfile] = useState<StateProperties[]>([]);
 
     type StateProperties = {
@@ -85,15 +84,12 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
     const selectedDate = !outsideCurrentMonth && dayHasEvent(day);
 
     useEffect(() => {
-        setLoading(true);
 
         fetch('http://localhost:7762/api/v1/event/all')
             .then(response => response.json())
             .then(data => {
                 setProfile(data);
-                setLoading(false);
             })
-
     }, []);
 
 
