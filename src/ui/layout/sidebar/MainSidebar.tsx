@@ -8,10 +8,11 @@ import {
     Toolbar, Tooltip, Typography, useMediaQuery, useTheme
 } from "@mui/material";
 import {ChevronLeft} from "@mui/icons-material";
-import React, {FC, ReactElement} from "react";
+import React, {FC, ReactElement, useEffect} from "react";
 import {ROUTES} from "@src/routing/Routes";
 import {ListItemLink} from "@src/ui-shared/link/ListItemLink";
 import {DRAWER_CLOSE_WIDTH_LG, DRAWER_OPEN_WIDTH} from "@src/ui-shared/constants/Constants";
+import {useLocation} from "react-router-dom";
 
 const StyledListSubheader = styled(ListSubheader)(({theme}) => ({
     lineHeight: theme.spacing(2),
@@ -56,7 +57,14 @@ interface Prop {
 
 export const MainSidebar: FC<Prop> = ({toggleDrawer, open}) => {
     const theme = useTheme()
+    const {pathname} = useLocation()
     const smallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
+    useEffect(() => {
+        if (open && smallScreen) {
+            toggleDrawer()
+        }
+    }, [pathname])
 
     const renderMenuSectionLabel = (
         sectionLabel: string | undefined,
