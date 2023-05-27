@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { ScreenLayout } from "@src/ui/layout/main-layout/ScreenLayout";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { AddRounded } from "@mui/icons-material";
 import { Breadcrumb } from "@src/routing/Routes";
 import SwitchableView from "./SwitchableView";
@@ -108,7 +108,7 @@ export const Courses: FC<Prop> = ({ breadcrumbs }) => {
       action={createButton}
       breadcrumbs={breadcrumbs}
     >
-      <SwitchableView title="Courses" data={cardData} />
+      <SwitchableView title="" data={cardData} />
     </ScreenLayout>
   );
 };

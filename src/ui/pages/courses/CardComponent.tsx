@@ -3,9 +3,6 @@ import {
   CardMedia,
   CardContent,
   Typography,
-  Grid,
-  Button,
-  useTheme,
 } from "@mui/material";
 import * as React from "react";
 
@@ -51,8 +48,7 @@ export const CardComponentGrid: React.FC<CardProps> = ({ info }) => (
 export const CardComponentList: React.FC<CardProps> = ({ info }) => (
   <Card
     style={{
-      background: `url(${info.image}) no-repeat center center`,
-      backgroundSize: "cover",
+      background: `url(${info.image}) no-repeat right`,
       display: "flex",
       justifyContent: "flex-start",
       alignItems: "center",
@@ -60,7 +56,7 @@ export const CardComponentList: React.FC<CardProps> = ({ info }) => (
     }}
   >
     <CardContent>
-      <Typography variant="h5" component="div">
+      <Typography variant="h5" component="div" width={'150px'}>
         {info.title}
       </Typography>
     </CardContent>
