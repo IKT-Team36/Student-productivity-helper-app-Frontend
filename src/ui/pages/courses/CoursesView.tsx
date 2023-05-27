@@ -15,7 +15,12 @@ export type CardListProps = {
 
 export const ListView: React.FC<CardListProps> = ({ title, data }) => (
   <div>
-    <Typography variant="h4" component="h1">
+    <Typography
+      variant="h4"
+      component="h1"
+      marginBottom={"10px"}
+      color="primary"
+    >
       {title}
     </Typography>
     {data.map((info) => (
@@ -34,7 +39,12 @@ export const GridView: React.FC<CardListProps> = ({ title, data }) => {
 
   return (
     <div>
-      <Typography variant="h4" component="h1">
+      <Typography
+        variant="h4"
+        component="h1"
+        marginBottom={"10px"}
+        color="primary"
+      >
         {title}
       </Typography>
       <Grid container spacing={2}>
