@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {FC, useState} from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {alpha, Box, Button, Grid, styled, Typography} from "@mui/material";
 import {
@@ -7,6 +7,7 @@ import {
     PendingOutlined,
     CheckCircleOutlineRounded
 } from '@mui/icons-material';
+import {Breadcrumb} from "@src/routing/Routes";
 
 const TodoContainer = styled(Box)<{
     dragover: boolean
@@ -59,7 +60,11 @@ const ItemStyled = styled(Box)(({theme}) => ({
 
 }))
 
-export const Todos = () => {
+interface Prop {
+    breadcrumbs: Breadcrumb[]
+}
+
+export const Todos: FC<Prop> = ({breadcrumbs}) => {
     type TaskType = 'todo' | 'in progress' | 'done'
 
     const [taskTodo, setTaskTodo] = useState<string[]>(["Widget11231231231231231231231231231231231231asdasdasasdassassda", "Widget2"])
@@ -129,7 +134,7 @@ export const Todos = () => {
     )
 
     return (
-        <ScreenLayout title={'Todos'} action={createButton}>
+        <ScreenLayout title={'Todos'} action={createButton} breadcrumbs={breadcrumbs}>
             <Box textAlign={'justify'} sx={{border: '1px solid', borderColor: 'primary.main', borderRadius: 3}} p={5}>
                 <Grid container spacing={2}>
 

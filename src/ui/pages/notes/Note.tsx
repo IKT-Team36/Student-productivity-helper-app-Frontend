@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {
-    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid, IconButton
+    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid
 } from "@mui/material";
 import {AddRounded} from "@mui/icons-material";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,19 +14,7 @@ import {useNavigate} from "react-router-dom";
 export const Notes = () => {
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    const createButton = (
-        <Button variant="outlined" startIcon={<AddRounded/>} onClick={handleOpen}>Create new</Button>
-    )
-
-    type StateProperties = {
-        noteId: number;
-        noteContent: string;
-        dateModified: string;
-    }
-
+    const [loading, setLoading] = useState(false);
     const [profile, setProfile] = useState<StateProperties[]>([]);
     const [dataSubmit, setDataSubmit] = useState({
         noteContent: "",
@@ -35,7 +23,14 @@ export const Notes = () => {
         course: 29
 
     });
-    const [loading, setLoading] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    type StateProperties = {
+        noteId: number;
+        noteContent: string;
+        dateModified: string;
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -49,7 +44,6 @@ export const Notes = () => {
             })
 
     }, []);
-
 
     const remove = async (id: number) => {
         let url = 'http://localhost:7762/api/v1/note/delete/'
@@ -91,47 +85,62 @@ export const Notes = () => {
 
     }
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
+    const createButton = (
+        <Button variant="outlined" startIcon={<AddRounded/>} onClick={handleOpen}>Create new</Button>
+    )
+
     return (
         <ScreenLayout title={'Notes'} action={createButton}>
             <Box>
                 <Dialog onClose={handleClose} open={open}>
                     <DialogTitle color={'primary'}>Create new note</DialogTitle>
                     <form onSubmit={(e) => handleSubmit(e)}>
-                        <DialogContent>
-                            <Grid container spacing={2} mt={1}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        label="Description"
-                                        multiline
-                                        rows={14}
-                                        variant="outlined"
-                                        placeholder={'Description'}
-                                        fullWidth
-                                        value={dataSubmit.noteContent}
-                                        id={'Description'}
-                                        onChange={(e)=>handleChange(e)}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
-                                            <DemoItem>
-                                                <DateTimePicker defaultValue={dayjs()}/>
-                                            </DemoItem>
-                                        </DemoContainer>
-                                    </LocalizationProvider>
-                                </Grid>
+                    <DialogContent>
+                        <Grid container spacing={2} mt={2}>
+                            <Grid item xs={12}>
+                                <TextField color={'primary'}
+                                           label="Title"
+                                           placeholder={'Title'}
+                                           variant="outlined"
+                                           fullWidth
+                                />
                             </Grid>
-                            <DialogActions sx={{mt: 3, p: 0}}>
-                                <Button variant="outlined"
-                                        onClick={handleClose}>Close</Button>
-                                <Button variant="contained" sx={{width: '30%'}}
-                                        type={'submit'}>Save</Button>
-                            </DialogActions>
-                        </DialogContent>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Description"
+                                    multiline
+                                    rows={14}
+                                    variant="outlined"
+                                    placeholder={'Description'}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
+                                        <DemoItem>
+                                            <DateTimePicker defaultValue={dayjs()}/>
+                                        </DemoItem>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
+                                        <DemoItem>
+                                            <DateTimePicker defaultValue={dayjs()}/>
+                                        </DemoItem>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                            </Grid>
+                        </Grid>
+                        <DialogActions sx={{mt: 3, p: 0}}>
+                            <Button variant="outlined"
+                                    onClick={handleClose}>Close</Button>
+                            <Button variant="contained" sx={{width: '30%'}}
+                                    onClick={handleClose}>Save</Button>
+                        </DialogActions>
+                    </DialogContent>
                     </form>
                 </Dialog>
             </Box>
