@@ -1,6 +1,6 @@
-import React, {FC, ReactElement} from "react";
+import React, {FC, ReactElement, useEffect, useState} from "react";
 import {PickersDay, PickersDayProps} from "@mui/x-date-pickers";
-import {Dayjs} from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
 import {
     Badge,
     Box,
@@ -74,8 +74,28 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [open, setOpen] = React.useState(false);
 
+    const [loading, setLoading] = useState(false);
+    const [profile, setProfile] = useState<StateProperties[]>([]);
+
+    type StateProperties = {
+        eventName: string; eventLocation: string; eventDate: string;
+    }
+
     const smallScreen = useMediaQuery(theme.breakpoints.down('md'))
     const selectedDate = !outsideCurrentMonth && dayHasEvent(day);
+
+    useEffect(() => {
+        setLoading(true);
+
+        fetch('http://localhost:7762/api/v1/event/all')
+            .then(response => response.json())
+            .then(data => {
+                setProfile(data);
+                setLoading(false);
+            })
+
+    }, []);
+
 
     const handleDaySelect = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (selectedDate && !open) {
@@ -97,18 +117,13 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
             result = (
                 <Box style={{overflow: "hidden", textOverflow: "ellipsis"}}>
                     {/* display first 3 events */}
-                    <Typography noWrap>
-                        areallyreallylongaddress@email.example.com
-                    </Typography>
-                    <Typography noWrap>
-                        areallyreallylongaddress@email.example.com
-                    </Typography>
-                    <Typography noWrap>
-                        areallyreallylongaddress@email.example.com
-                    </Typography>
+                    {profile.map(profiler =>
+                        <Typography noWrap>
+                            {profiler.eventName} <br/>
+                        </Typography>
+                    )}
                 </Box>
             )
-
         }
         return result
     }
@@ -118,9 +133,11 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
         if (selectedDate) {
             result = (
                 <EventsBody>
-                    <Typography>
-                        Events displayed here.
-                    </Typography>
+                    {profile.map(profiler=>
+                        <Typography>
+                            {profiler.eventLocation} <br/>
+                            {profiler.eventDate}
+                        </Typography>)}
                 </EventsBody>
             )
         }

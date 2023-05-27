@@ -79,7 +79,7 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
             </Box> :
             <Box>
                 {profile.map(profiler =>
-                    <Card key={profiler?.noteId} sx={{mr: 3, mb:2}}>
+                    <Card key={profiler?.noteId} sx={{mr: 3, mb:2, position:'relative'}}>
                         <CardContent sx={{display:'inline-block'}}>
                             <IconButton sx={{borderRadius: '10px', scale: '50%'}}>N. {profiler?.noteId}</IconButton>
                             <Box display={"inline-block"} width={'70%'}>
@@ -92,7 +92,7 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
                                 <Button onClick={() => remove(profiler?.noteId)}>Delete</Button>
                             </CardActions>
                         </CardContent>
-                        <Box width={'10%'} height={'100px'} sx={{float:'inline-end'}} bgcolor={'primary.main'}></Box>
+                        <Box width={'10%'} height={'80px'} sx={{float:'inline-end', position:'absolute', right:'0', top:'0'}} bgcolor={'primary.main'}></Box>
                     </Card>)}
             </Box>}
         <Box>
