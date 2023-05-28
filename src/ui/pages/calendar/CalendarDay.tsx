@@ -134,7 +134,7 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
                         <Box key={profiler.eventName}>
                             {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
                                 <Typography>{profiler.eventLocation} <br/>
-                                    {dayjs(profiler.eventDate).format('HH:m DD/MMMM/YYYY').toString()}
+                                    {dayjs(profiler.eventDate).format('HH:mm DD/MMMM/YYYY').toString()}
                                 </Typography> : ''}
                         </Box>)}
                 </EventsBody>
