@@ -1,6 +1,6 @@
 import React, {FC, ReactElement, useEffect, useState} from "react";
 import {PickersDay, PickersDayProps} from "@mui/x-date-pickers";
-import  {Dayjs} from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
 import {
     Badge,
     Box,
@@ -132,7 +132,7 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
                     {profile.map(profiler=>
                         <Typography>
                             {profiler.eventLocation} <br/>
-                            {profiler.eventDate}
+                            {dayjs(profiler.eventDate).format('HH:m DD/MMMM/YYYY').toString()}
                         </Typography>)}
                 </EventsBody>
             )
