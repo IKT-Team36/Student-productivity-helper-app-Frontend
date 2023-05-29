@@ -5,6 +5,7 @@ Technologies used:
 <ul>
   <li>React</li>
   <li>Vite</li>
+  <li>Material - UI</li>
   <li>TypeScript</li>
 </ul> 
 
