@@ -1,12 +1,13 @@
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, {Dayjs} from 'dayjs';
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateCalendar, DayCalendarSkeleton} from "@mui/x-date-pickers";
 import {styled} from "@mui/material";
 import {CalendarDay} from "@src/ui/pages/calendar/CalendarDay";
 import {Breadcrumb} from "@src/routing/Routes";
+import {useSnackbar} from "@src/ui-shared/base/SnackbarProvider";
 
 const DateCalendarStyled = styled(DateCalendar)(({theme}) => ({
     width: '80%',
@@ -106,11 +107,32 @@ interface Prop {
 }
 
 export const Calendar: FC<Prop> = ({breadcrumbs}) => {
+    const {showSnackbar} = useSnackbar()
+    const [profile, setProfile] = useState<StateProperties[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    type StateProperties = {
+        eventName: string; eventLocation: string; eventDate: string;
+    }
     // state
     const [loadingCalendar, setLoadingCalendar] = useState<boolean>(false)
 
     // derived state
     const initialValue = dayjs();
+
+    useEffect(() => {
+        setLoading(true);
+        fetch('http://localhost:7762/api/v1/event/all')
+            .then(response => response.json())
+            .then(data => {
+                setProfile(data);
+                setLoading(false);
+            })
+            .catch(() => {
+                showSnackbar('Server not available', "error")
+                setLoading(false);
+            })
+    }, []);
 
     // TODO to be returned from backend
     const daysWithEvents = [
@@ -134,6 +156,15 @@ export const Calendar: FC<Prop> = ({breadcrumbs}) => {
         return daysWithEvents.findIndex((dayWithEvent) => day.isSame(dayWithEvent)) !== -1
     }
 
+    const getEventsForDay = (day: Dayjs): StateProperties | undefined => {
+
+        const event = profile.find((item) => {
+                return dayjs(item.eventDate).format('DD/MM/YYYY') === day.format('DD/MM/YYYY')
+            }
+        )
+        return event
+    }
+
     return (
         <ScreenLayout title={'Calendar'} breadcrumbs={breadcrumbs}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -146,7 +177,8 @@ export const Calendar: FC<Prop> = ({breadcrumbs}) => {
                     renderLoading={() => <DayCalendarSkeleton/>}
                     slots={{
                         // @ts-ignore
-                        day: ((prop) => <CalendarDay dayProps={prop} dayHasEvent={dayHasEvent}/>)
+                        day: ((prop) => <CalendarDay dayProps={prop} dayHasEvent={dayHasEvent} loading={loading}
+                                                     getEventsForDay={getEventsForDay}/>)
                     }}
                 />
             </LocalizationProvider>

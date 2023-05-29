@@ -14,7 +14,6 @@ import {
     useMediaQuery,
     useTheme,
 } from "@mui/material";
-import {useSnackbar} from "@src/ui-shared/base/SnackbarProvider";
 
 const EventPopperStyled = styled(Popper)(() => ({
     zIndex: 90000,
@@ -68,43 +67,33 @@ const EventBadge = styled(Badge)<{ isselected: number }>
     },
 }))
 
+type StateProperties = {
+    eventName: string; eventLocation: string; eventDate: string;
+}
+
 interface Prop {
     dayProps: PickersDayProps<Dayjs>
     dayHasEvent: (dat: Dayjs) => boolean
+    loading: boolean
+    getEventsForDay: (dat: Dayjs) => StateProperties | undefined
 }
 
-export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => {
+export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent, loading, getEventsForDay}): ReactElement => {
     const {day, outsideCurrentMonth, ...other} = dayProps;
     const theme = useTheme()
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [openCalendar, setOpenCalendar] = React.useState(false);
-    const [loading, setLoading] = useState(false);
 
-    const {showSnackbar, open} = useSnackbar()
-
-    const [profile, setProfile] = useState<StateProperties[]>([]);
-
-    type StateProperties = {
-        eventName: string; eventLocation: string; eventDate: string;
-    }
+    const [profile, setProfile] = useState<StateProperties>();
 
     const smallScreen = useMediaQuery(theme.breakpoints.down('md'))
     const selectedDate = !outsideCurrentMonth && dayHasEvent(day);
 
     useEffect(() => {
-        if (!open) {
-            setLoading(true);
-            fetch('http://localhost:7762/api/v1/event/all')
-                .then(response => response.json())
-                .then(data => {
-                    setProfile(data);
-                    setLoading(false);
-                })
-                .catch(() => {
-                    showSnackbar('Server not available', "error")
-                    setLoading(false);
-                })
+        if (!loading && profile === undefined) {
+            const event = getEventsForDay(day)
+            setProfile(event)
         }
     }, []);
 
@@ -134,14 +123,12 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
                                 <CircularProgress size="2rem"/>
                             </Box> :
                             <Box style={{overflow: "hidden", textOverflow: "ellipsis"}}>
-                                {/* display first 3 events */}
-                                {profile.map(profiler =>
-                                    <Box key={profiler.eventName}>
-                                        {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
+                                {profile &&
+                                    <Box>
+                                        {parseInt(day.format('DD')) == parseInt(dayjs(profile.eventDate).format('DD')) ?
                                             <Typography
-                                                sx={{textAlign: 'center'}}>{profiler.eventName} </Typography> : ''}
-                                    </Box>
-                                )}
+                                                sx={{textAlign: 'center'}}>{profile.eventName} </Typography> : ''}
+                                    </Box>}
                             </Box>
                     }
                 </Box>
@@ -161,13 +148,14 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
                         </Box> :
                         <>
                             {
-                                profile.map(profiler =>
-                                    <Box key={profiler.eventName}>
-                                        {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
-                                            <Typography>{profiler.eventLocation} <br/>
-                                                {dayjs(profiler.eventDate).format('HH:mm DD/MMMM/YYYY').toString()}
-                                            </Typography> : ''}
-                                    </Box>)
+                                profile &&
+                                <Box>
+                                    <Typography>Event: {profile.eventName}</Typography>
+                                    {parseInt(day.format('DD')) == parseInt(dayjs(profile.eventDate).format('DD')) ?
+                                        <Typography>Location: {profile.eventLocation} <br/>
+                                            {dayjs(profile.eventDate).format('HH:mm DD/MMMM/YYYY').toString()}
+                                        </Typography> : ''}
+                                </Box>
                             }
                         </>
 

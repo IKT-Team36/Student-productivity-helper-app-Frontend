@@ -1,11 +1,11 @@
 import React, {FC, useState} from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
-import {alpha, Box, Button, Grid, styled, Typography} from "@mui/material";
+import {alpha, Box, Grid, styled, Typography, useTheme} from "@mui/material";
 import {
-    AddRounded,
     RotateRightRounded,
     PendingOutlined,
-    CheckCircleOutlineRounded
+    CheckCircleOutlineRounded,
+    PlaylistAddCheckRounded
 } from '@mui/icons-material';
 import {Breadcrumb} from "@src/routing/Routes";
 
@@ -53,8 +53,9 @@ const ItemStyled = styled(Box)(({theme}) => ({
     borderColor: theme.palette.primary.main,
     padding: theme.spacing(2),
     margin: theme.spacing(2),
+    textAlign: 'left',
     '& .MuiTypography-root': {
-        fontSize: '12px !important',
+        textAlign: 'left'
     },
     cursor: 'pointer'
 
@@ -66,6 +67,8 @@ interface Prop {
 
 export const Todos: FC<Prop> = ({breadcrumbs}) => {
     type TaskType = 'todo' | 'in progress' | 'done'
+
+    const theme = useTheme()
 
     const [taskTodo, setTaskTodo] = useState<string[]>(["Complete Homework", "Finish writing script"])
     const [taskInProgress, setTaskInProgress] = useState<string[]>(["Developing App", "Rewrite Codebase"])
@@ -129,18 +132,23 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
         e.stopPropagation()
     }
 
-    const createButton = (
-        <Button variant="outlined" startIcon={<AddRounded/>}>Create new</Button>
-    )
-
     return (
-        <ScreenLayout title={'Todos'} action={createButton} breadcrumbs={breadcrumbs}>
-            <Box textAlign={'justify'} sx={{border: '1px solid', borderColor: 'primary.main', borderRadius: 3}} p={5}>
-                <Grid container spacing={2}>
+        <ScreenLayout title={'Todos'} breadcrumbs={breadcrumbs}>
+            <Box textAlign={'justify'} sx={{
+                border: '1px solid',
+                borderColor: 'primary.main',
+                borderRadius: 3,
+                backgroundColor: alpha(theme.palette.primary.main, 0.2)
+            }} p={5}>
+                <Grid container spacing={1}>
 
 
                     {/* TO DO */}
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={4}
+                          onDrop={(e) => handleOnDrop(e, 'todo')}
+                          onDragOver={(e) => handleDragOver(e, 'todo')}
+                          onDragLeave={() => setDragoverTodo(false)}
+                    >
                         <Typography textAlign={'center'} m={1} mb={2}>To do</Typography>
                         <TodoContainer dragover={false}
                                        width={'100%'}
@@ -148,17 +156,30 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
                                        maxHeight={'300px'}
                         >
                             <Box minHeight={'300px'} maxHeight={'300px'} overflow={'hidden'}
-                                 sx={{overflowY: "scroll"}} color={'primary'}>
-                                {taskTodo.map((task) => {
-                                    return (
-                                        <ItemStyled
-                                            key={task}
-                                            draggable={true}
-                                            onDragStart={(e) => handleOnDrag(e, task, 'todo')}>
-                                            <Typography noWrap>{task}</Typography>
-                                        </ItemStyled>
-                                    )
-                                })}
+                                 sx={{overflowY: "scroll"}} color={'primary'} textAlign={'center'}>
+                                {taskTodo.length > 0 ?
+                                    (
+                                        <>
+                                            {
+                                                taskTodo.map((task) => {
+                                                    return (
+                                                        <ItemStyled
+                                                            key={task}
+                                                            draggable={true}
+                                                            onDragStart={(e) => handleOnDrag(e, task, 'todo')}>
+                                                            <Typography noWrap
+                                                                        variant={'caption'}>Description:</Typography>
+                                                            <Typography noWrap variant={'subtitle2'}>{task}</Typography>
+                                                        </ItemStyled>
+                                                    )
+                                                })
+                                            }
+                                        </>
+                                    ) :
+                                    <Box>
+                                        <PlaylistAddCheckRounded color={'primary'}/>
+                                    </Box>
+                                }
                             </Box>
                         </TodoContainer>
 
@@ -187,7 +208,11 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
 
 
                     {/* IN PROGRESS */}
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={4}
+                          onDrop={(e) => handleOnDrop(e, 'in progress')}
+                          onDragOver={(e) => handleDragOver(e, 'in progress')}
+                          onDragLeave={() => setDragoverInProgress(false)}
+                    >
                         <Typography textAlign={'center'} m={1} mb={2}>In progress</Typography>
                         <TodoContainer dragover={false}
                                        width={'100%'}
@@ -196,16 +221,26 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
                         >
                             <Box minHeight={'300px'} maxHeight={'300px'} overflow={'hidden'}
                                  sx={{overflowY: "scroll"}} color={'primary'}>
-                                {taskInProgress.map((task) => {
-                                    return (
-                                        <ItemStyled
-                                            key={task}
-                                            draggable={true}
-                                            onDragStart={(e) => handleOnDrag(e, task, 'in progress')}>
-                                            <Typography noWrap>{task}</Typography>
-                                        </ItemStyled>
-                                    )
-                                })}
+                                {taskInProgress.length > 0 ?
+                                    (
+                                        <>
+                                            {taskInProgress.map((task) => {
+                                                return (
+                                                    <ItemStyled
+                                                        key={task}
+                                                        draggable={true}
+                                                        onDragStart={(e) => handleOnDrag(e, task, 'in progress')}>
+                                                        <Typography noWrap variant={'caption'}>Description:</Typography>
+                                                        <Typography noWrap variant={'subtitle2'}>{task}</Typography>
+                                                    </ItemStyled>
+                                                )
+                                            })}
+                                        </>
+                                    ) :
+                                    <Box>
+                                        <PlaylistAddCheckRounded color={'primary'}/>
+                                    </Box>
+                                }
                             </Box>
                         </TodoContainer>
 
@@ -234,7 +269,11 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
 
 
                     {/* DONE */}
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={4}
+                          onDrop={(e) => handleOnDrop(e, 'done')}
+                          onDragOver={(e) => handleDragOver(e, 'done')}
+                          onDragLeave={() => setDragoverDone(false)}
+                    >
                         <Typography textAlign={'center'} m={1} mb={2}>Done</Typography>
                         <TodoContainer dragover={false}
                                        width={'100%'}
@@ -243,17 +282,28 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
                         >
                             <Box minHeight={'300px'} maxHeight={'300px'} overflow={'hidden'}
                                  sx={{overflowY: "scroll"}} color={'primary'}>
-                                {taskDone.map((task) => {
-                                    return (
-                                        <ItemStyled
-                                            key={task}
-                                            draggable={true}
-                                            onDragStart={(e) => handleOnDrag(e, task, 'done')}
-                                        >
-                                            <Typography noWrap>{task}</Typography>
-                                        </ItemStyled>
-                                    )
-                                })}
+                                {
+                                    taskDone.length > 0 ? (
+                                            <>
+                                                {taskDone.map((task) => {
+                                                    return (
+                                                        <ItemStyled
+                                                            key={task}
+                                                            draggable={true}
+                                                            onDragStart={(e) => handleOnDrag(e, task, 'done')}
+                                                        >
+                                                            <Typography noWrap variant={'caption'}>Description:</Typography>
+                                                            <Typography noWrap variant={'subtitle2'}>{task}</Typography>
+                                                        </ItemStyled>
+                                                    )
+                                                })}
+                                            </>
+                                        )
+                                        :
+                                        <Box>
+                                            <PlaylistAddCheckRounded color={'primary'}/>
+                                        </Box>
+                                }
                             </Box>
                         </TodoContainer>
 
