@@ -48,7 +48,7 @@ const CourseRoute: RouteModel = {
 const CourseRouteSingle: RouteModel = {
   path: "/courses/:courseId",
   Component: SingleCourse,
-  label: "Course",
+  label: "Course Details",
   icon: <BookOutlined />,
   breadCrumbs: [
     { path: HomeRoute.path, label: HomeRoute.label },

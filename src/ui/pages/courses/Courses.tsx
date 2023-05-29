@@ -4,7 +4,7 @@ import {AddRounded} from "@mui/icons-material";
 import {Breadcrumb} from "@src/routing/Routes";
 import SwitchableView from "./SwitchableView";
 import {
-    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid
+    Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid, CircularProgress
 } from "@mui/material";
 import {CardInfo} from "@src/ui/pages/courses/CardComponent";
 import {useSnackbar} from "@src/ui-shared/base/SnackbarProvider";
@@ -14,8 +14,10 @@ interface Prop {
 }
 
 export const Courses: FC<Prop> = ({breadcrumbs}) => {
+    const {showSnackbar} = useSnackbar()
 
     const [profile, setProfile] = useState<CardInfo[]>([]);
+    const [loading, setLoading] = useState(false);
     const [reloadFlag, setReloadFlag] = useState(false);
     const [dataSubmit, setDataSubmit] = useState<CardInfo>({
         name: '',
@@ -24,31 +26,37 @@ export const Courses: FC<Prop> = ({breadcrumbs}) => {
         courseStatus: 'In Progress',
         user: 27
     });
-    const {showSnackbar} = useSnackbar()
 
     useEffect(() => {
-
+        setLoading(true)
         fetch('http://localhost:7762/api/v1/course/all')
             .then(response => response.json())
             .then(data => {
                 setProfile(data);
+                setLoading(false)
+            })
+            .catch(() => {
+                showSnackbar('Server not available', "error")
+                setLoading(false);
             })
     }, [reloadFlag]);
+
     const handleSubmit = async (e: any) => {
         handleClose()
         e.preventDefault()
+        setLoading(true)
         await fetch('http://localhost:7762/api/v1/course/add', {
             method: 'POST', body: JSON.stringify(dataSubmit), headers: {
                 'Content-Type': 'application/json'
             }
         })
             .then(() => {
-                console.log(dataSubmit)
                 showSnackbar('Successfully added course', "success")
                 setReloadFlag(prev => !prev)
             })
             .catch(() => {
                 showSnackbar('Error creating course', "error")
+                setLoading(false)
             });
     }
 
@@ -58,16 +66,16 @@ export const Courses: FC<Prop> = ({breadcrumbs}) => {
         newData[e.target.id] = e.target.value
         setDataSubmit(newData)
     }
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     const createButton = (
         <Button variant="outlined" onClick={handleOpen} startIcon={<AddRounded/>}>
             Create new
         </Button>
     );
-
-
 
     return (
         <ScreenLayout
@@ -75,56 +83,62 @@ export const Courses: FC<Prop> = ({breadcrumbs}) => {
             action={createButton}
             breadcrumbs={breadcrumbs}
         >
-            <Box>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <Dialog onClose={handleClose} open={open} maxWidth={'sm'}>
-                        <DialogTitle color={'primary'}>Create new course</DialogTitle>
-                        <DialogContent dividers>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField color={'primary'}
-                                               label="Name"
-                                               placeholder={'Name'}
-                                               variant="outlined"
-                                               fullWidth
-                                               id={'name'}
-                                               onChange={(e) => handleChange(e)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField color={'primary'}
-                                               label="Semester"
-                                               placeholder={'Semester'}
-                                               variant="outlined"
-                                               fullWidth
-                                               id={'semester'}
-                                               onChange={(e) => handleChange(e)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        label="Description"
-                                        multiline
-                                        rows={14}
-                                        variant="outlined"
-                                        placeholder={'Description'}
-                                        fullWidth
-                                        id={'description'}
-                                        onChange={(e) => handleChange(e)}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </DialogContent>
-                        <DialogActions sx={{p: 3}}>
-                            <Button variant="outlined"
-                                    onClick={handleClose}>Close</Button>
-                            <Button variant="contained" sx={{width: '30%'}}
-                                    onClick={(e) => handleSubmit(e)}>Save</Button>
-                        </DialogActions>
-                    </Dialog>
-                </form>
-            </Box>
-            <SwitchableView title="" data={profile}/>
+            {loading ? <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <CircularProgress/>
+                </Box> :
+                <>
+                    <Box>
+                        <form onSubmit={(e) => handleSubmit(e)}>
+                            <Dialog onClose={handleClose} open={open} maxWidth={'sm'}>
+                                <DialogTitle color={'primary'}>Create new course</DialogTitle>
+                                <DialogContent dividers>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                            <TextField color={'primary'}
+                                                       label="Name"
+                                                       placeholder={'Name'}
+                                                       variant="outlined"
+                                                       fullWidth
+                                                       id={'name'}
+                                                       onChange={(e) => handleChange(e)}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField color={'primary'}
+                                                       label="Semester"
+                                                       placeholder={'Semester'}
+                                                       variant="outlined"
+                                                       fullWidth
+                                                       id={'semester'}
+                                                       onChange={(e) => handleChange(e)}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                label="Description"
+                                                multiline
+                                                rows={14}
+                                                variant="outlined"
+                                                placeholder={'Description'}
+                                                fullWidth
+                                                id={'description'}
+                                                onChange={(e) => handleChange(e)}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </DialogContent>
+                                <DialogActions sx={{p: 3}}>
+                                    <Button variant="outlined"
+                                            onClick={handleClose}>Close</Button>
+                                    <Button variant="contained" sx={{width: '30%'}}
+                                            onClick={(e) => handleSubmit(e)}>Save</Button>
+                                </DialogActions>
+                            </Dialog>
+                        </form>
+                    </Box>
+                    <SwitchableView title="" data={profile}/>
+                </>
+            }
         </ScreenLayout>
     );
 };
