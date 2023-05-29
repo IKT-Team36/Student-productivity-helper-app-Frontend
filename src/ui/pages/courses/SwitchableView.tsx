@@ -16,7 +16,7 @@ const SwitchableView: React.FC<CardListProps> = ({title, data}) => {
         order: "asc" | "desc";
     }>({field: "", order: "asc"});
 
-    const [groupBy, setGroupBy] = useState<"isFinished" | "createdDate" | "">("");
+    const [groupBy, setGroupBy] = useState<"isFinished"  | "">("");
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -24,13 +24,13 @@ const SwitchableView: React.FC<CardListProps> = ({title, data}) => {
     function getSortFunction(a: CardInfo, b: CardInfo): number {
         if (sort.field === "alphabetical") {
             if (sort.order === "asc") {
-                return a.title.localeCompare(b.title);
+                return a.name.localeCompare(b.name);
             } else {
-                return b.title.localeCompare(a.title);
+                return b.name.localeCompare(a.name);
             }
         } else if (sort.field === "dateAdded") {
-            const dateA = new Date(a.createdDate);
-            const dateB = new Date(b.createdDate);
+            const dateA = new Date(a.semester );
+            const dateB = new Date(b.semester);
             if (sort.order === "asc") {
                 return dateA.getTime() - dateB.getTime();
             } else {
@@ -43,16 +43,7 @@ const SwitchableView: React.FC<CardListProps> = ({title, data}) => {
     const getGroupedByField = (): Record<string, CardInfo[]> => {
         if (groupBy === "isFinished") {
             return data.reduce((result, item) => {
-                const key = item.isFinished ? "Completed" : "In Progress";
-                if (!result[key]) {
-                    result[key] = [];
-                }
-                result[key].push(item);
-                return result;
-            }, {} as Record<string, CardInfo[]>);
-        } else if (groupBy === "createdDate") {
-            return data.reduce((result, item) => {
-                const key = new Date(item.createdDate).toDateString();
+                const key = item.courseStatus === "Passed" ? "Passed" : "In Progress";
                 if (!result[key]) {
                     result[key] = [];
                 }

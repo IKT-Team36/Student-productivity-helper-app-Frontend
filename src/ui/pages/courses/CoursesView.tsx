@@ -24,9 +24,9 @@ export const ListView: React.FC<CardListProps> = ({ title, data }) => (
     >
       {title}
     </Typography>
-    {data.map((info) => (
-      <Link to={`/courses/${info.id}`} style={{ textDecoration: "none" }}>
-        <CardComponentList key={info.id} info={info} />
+    {data.map((info, index) => (
+      <Link to={`/courses/${index+1}`} style={{ textDecoration: "none" }} key={index}>
+        <CardComponentList  info={info} />
       </Link>
     ))}
   </div>
@@ -34,11 +34,7 @@ export const ListView: React.FC<CardListProps> = ({ title, data }) => (
 
 export const GridView: React.FC<CardListProps> = ({ title, data }) => {
   const theme = useTheme();
-  const matches = {
-    sm: useMediaQuery(theme.breakpoints.down("sm")),
-    md: useMediaQuery(theme.breakpoints.between("sm", "md")),
-    lg: useMediaQuery(theme.breakpoints.up("md")),
-  };
+
 
   return (
     <div>
@@ -51,9 +47,9 @@ export const GridView: React.FC<CardListProps> = ({ title, data }) => {
         {title}
       </Typography>
       <Grid container spacing={2}>
-        {data.map((info) => (
-          <Grid item xs={12} sm={12} md={6} lg={4} xl={4} key={info.id}>
-            <Link to={`/courses/${info.id}`} style={{ textDecoration: "none" }}>
+        {data.map((info,index) => (
+          <Grid item xs={12} sm={12} md={6} lg={4} xl={4} key={index}>
+            <Link to={`/courses/${index+1}`} style={{ textDecoration: "none" }}>
               <CardComponentGrid info={info} />
             </Link>
           </Grid>

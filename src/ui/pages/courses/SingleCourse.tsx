@@ -1,242 +1,237 @@
-import { Breadcrumb } from "@src/routing/Routes";
-import { ScreenLayout } from "@src/ui/layout/main-layout/ScreenLayout";
-import React, { FC } from "react";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {Breadcrumb} from "@src/routing/Routes";
+import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
+import React, {FC, useEffect, useState} from "react";
+import {Card, CardContent, Typography, Grid, Box} from "@mui/material";
+import {styled} from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 
-const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&:before": {
-    display: "none",
-  },
+const StyledAccordion = styled(Accordion)(({theme}) => ({
+    border: `1px solid ${theme.palette.divider}`,
+    "&:not(:last-child)": {
+        borderBottom: 0,
+    },
+    "&:before": {
+        display: "none",
+    },
 }));
 
-const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, .05)"
-      : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
-  },
+const StyledAccordionSummary = styled(AccordionSummary)(({theme}) => ({
+    backgroundColor:
+        theme.palette.mode === "dark"
+            ? "rgba(255, 255, 255, .05)"
+            : "rgba(0, 0, 0, .03)",
+    flexDirection: "row-reverse",
+    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+        transform: "rotate(90deg)",
+    },
+    "& .MuiAccordionSummary-content": {
+        marginLeft: theme.spacing(1),
+    },
 }));
 
-const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
+const StyledAccordionDetails = styled(AccordionDetails)(({theme}) => ({
+    padding: theme.spacing(2),
+    borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-interface Course {
-  name: string;
-  semester: string;
-  description: string;
-  courseStatus: string;
-  user: User;
-}
-
-interface User {
-  name: string;
-}
-
-interface Attachment {
-  name: string;
-  date: string;
-  subject: string;
-  type: string;
-  byteContent: string;
-  user_id: number;
-}
-
-interface EventDto {
-  eventName: string;
-  eventLocation: string;
-  eventDate: string;
-  user: number;
-  course: number;
-}
 
 interface Prop {
-  breadcrumbs: Breadcrumb[];
-  course: Course;
-  attachments: Attachment[];
-  events: EventDto[];
+    breadcrumbs: Breadcrumb[];
 }
 
-export const SingleCourse: FC<Prop> = ({
-  breadcrumbs,
-  course,
-  attachments,
-  events,
-}) => {
-  const dummyAttachments: Attachment[] = [
-    {
-      name: "Attachment 1",
-      date: "2023-05-28",
-      subject: "Subject 1",
-      type: "Type 1",
-      byteContent: "Content 1",
-      user_id: 1,
-    },
-    {
-      name: "Attachment 2",
-      date: "2023-05-29",
-      subject: "Subject 2",
-      type: "Type 2",
-      byteContent: "Content 2",
-      user_id: 2,
-    },
-  ];
+export const SingleCourse: FC<Prop> = ({breadcrumbs}) => {
 
-  const dummyEvents: EventDto[] = [
-    {
-      eventName: "Event 1",
-      eventLocation: "Location 1",
-      eventDate: "2023-06-01",
-      user: 1,
-      course: 1,
-    },
-    {
-      eventName: "Event 2",
-      eventLocation: "Location 2",
-      eventDate: "2023-06-02",
-      user: 2,
-      course: 1,
-    },
-  ];
+    const [attachment, setAttachment] = useState<Attachment[]>([]);
+    const [course, setCourse] = useState<Course[]>([]);
+    const [eventDto, setEventDto] = useState<EventDto[]>([]);
+    const [win, setWin] = useState((window.location.pathname).substring(9));
 
-  return (
-    <ScreenLayout title={"Course Name"} breadcrumbs={breadcrumbs}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Semester: course.semester
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Description: course.description
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Course Status: course.courseStatus
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                User: course.user.name
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography
-                variant="h5"
-                component="div"
-                align="center"
-                color="primary"
-                sx={{ marginBottom: 3 }}
-              >
-                Attachments
-              </Typography>
-              <div>
-                {dummyAttachments.length > 0 ? (
-                  dummyAttachments.map((attachment, index) => (
-                    <StyledAccordion key={index}>
-                      <StyledAccordionSummary
-                        expandIcon={
-                          <ArrowForwardIosSharpIcon
-                            sx={{ fontSize: "0.9rem" }}
-                          />
-                        }
-                        aria-controls={`panel${index + 1}d-content`}
-                        id={`panel${index + 1}d-header`}
-                      >
-                        <Typography>{attachment.name}</Typography>
-                      </StyledAccordionSummary>
-                      <StyledAccordionDetails>
-                        <Typography>
-                          Date: {attachment.date}
-                          <br />
-                          Subject: {attachment.subject}
-                          <br />
-                          Type: {attachment.type}
-                          <br />
-                          Byte Content: {attachment.byteContent}
-                          <br />
-                          User ID: {attachment.user_id}
-                        </Typography>
-                      </StyledAccordionDetails>
-                    </StyledAccordion>
-                  ))
-                ) : (
-                  <Typography variant="body1" color="text.secondary">
-                    No attachments found.
-                  </Typography>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography
-                variant="h5"
-                component="div"
-                align="center"
-                color="primary"
-                sx={{ marginBottom: 3 }}
-              >
-                Events
-              </Typography>
-              <div>
-                {dummyEvents.length > 0 ? (
-                  dummyEvents.map((event, index) => (
-                    <StyledAccordion key={index}>
-                      <StyledAccordionSummary
-                        expandIcon={
-                          <ArrowForwardIosSharpIcon
-                            sx={{ fontSize: "0.9rem" }}
-                          />
-                        }
-                        aria-controls={`panel${index + 1}d-content`}
-                        id={`panel${index + 1}d-header`}
-                      >
-                        <Typography>{event.eventName}</Typography>
-                      </StyledAccordionSummary>
-                      <StyledAccordionDetails>
-                        <Typography>
-                          Date: {event.eventDate}
-                          <br />
-                          Course: {event.course}
-                          <br />
-                          Location: {event.eventLocation}
-                          <br />
-                          User ID: {event.user}
-                        </Typography>
-                      </StyledAccordionDetails>
-                    </StyledAccordion>
-                  ))
-                ) : (
-                  <Typography variant="body1" color="text.secondary">
-                    No events found.
-                  </Typography>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </ScreenLayout>
-  );
+    type User ={
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+    }
+    type Course = {
+        courseId: number;
+        name: string;
+        semester: string;
+        description: string;
+        courseStatus: string;
+        user: User;
+    }
+
+    type Attachment = {
+        attachmentId: number;
+        name: string;
+        date: string;
+        subject: string;
+        type: string;
+        byteContent: string;
+        user_id: number;
+    }
+
+    type EventDto = {
+        eventId: number;
+        eventName: string;
+        eventLocation: string;
+        eventDate: string;
+        course: Course;
+        user:User;
+    }
+
+    useEffect(() => {
+
+        fetch('http://localhost:7762/api/v1/attachment/allAttachments')
+            .then(response => response.json())
+            .then(data => {
+                setAttachment(data);
+            })
+        fetch('http://localhost:7762/api/v1/course/all')
+            .then(response => response.json())
+            .then(data => {
+                setCourse(data);
+            })
+        fetch('http://localhost:7762/api/v1/event/all')
+            .then(response => response.json())
+            .then(data => {
+                setEventDto(data);
+            })
+    }, []);
+
+    return (
+        <ScreenLayout title={"Course Name"} breadcrumbs={breadcrumbs}>
+
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Card>
+                        {course.map((oneCourse,index) =>
+                            <Box key={index}>
+                                {parseInt(win) == index ?
+                                    <CardContent key={oneCourse.courseId}>
+                                        <Typography variant="h5" component="div">
+                                            Semester:{oneCourse.semester}
+
+                                        </Typography>
+                                        <Typography variant="body1" color="text.secondary">
+                                            Description: {oneCourse.description}
+                                        </Typography>
+                                        <Typography variant="body1" color="text.secondary">
+                                            Course Status: {oneCourse.courseStatus}
+                                        </Typography>
+                                    </CardContent> : ''}
+                            </Box>
+                        )}
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Card>
+                        <CardContent>
+                            <Typography
+                                variant="h5"
+                                component="div"
+                                align="center"
+                                color="primary"
+                                sx={{marginBottom: 3}}
+                            >
+                                Attachments
+                            </Typography>
+                            <div>
+                                {attachment.length > 0 ? (
+                                    attachment.map((oneAttachment, index) => (
+                                        <Box key={index}>
+                                            {oneAttachment.attachmentId === parseInt(win) ?
+                                                <StyledAccordion>
+                                                    <StyledAccordionSummary
+                                                        expandIcon={
+                                                            <ArrowForwardIosSharpIcon
+                                                                sx={{fontSize: "0.9rem"}}
+                                                            />
+                                                        }
+                                                        aria-controls={`panel${index + 1}d-content`}
+                                                        id={`panel${index + 1}d-header`}
+                                                    >
+                                                        <Typography>{oneAttachment.name}</Typography>
+                                                    </StyledAccordionSummary>
+                                                    <StyledAccordionDetails>
+                                                        <Typography>
+                                                            Date: {oneAttachment.date}
+                                                            <br/>
+                                                            Subject: {oneAttachment.subject}
+                                                            <br/>
+                                                            Type: {oneAttachment.type}
+                                                            <br/>
+                                                            Byte Content: {oneAttachment.byteContent}
+                                                            <br/>
+                                                            User ID: {oneAttachment.user_id}
+                                                        </Typography>
+                                                    </StyledAccordionDetails>
+                                                </StyledAccordion>
+                                                : ''}
+                                        </Box>
+                                    ))
+                                ) : (
+                                    <Typography variant="body1" color="text.secondary">
+                                        No attachments found.
+                                    </Typography>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Card>
+                        <CardContent>
+                            <Typography
+                                variant="h5"
+                                component="div"
+                                align="center"
+                                color="primary"
+                                sx={{marginBottom: 3}}
+                            >
+                                Events
+                            </Typography>
+                            <div>
+                                {eventDto.length > 0 ? (
+                                    eventDto.map((oneEvent, index) => (
+                                        <Box key={index}>
+                                            {parseInt(win) == oneEvent.eventId ?
+                                                <StyledAccordion key={index}>
+                                                    <StyledAccordionSummary
+                                                        expandIcon={
+                                                            <ArrowForwardIosSharpIcon
+                                                                sx={{fontSize: "0.9rem"}}
+                                                            />
+                                                        }
+                                                        aria-controls={`panel${index + 1}d-content`}
+                                                        id={`panel${index + 1}d-header`}
+                                                    >
+                                                        <Typography>{oneEvent.eventName}</Typography>
+                                                    </StyledAccordionSummary>
+                                                    <StyledAccordionDetails>
+                                                        <Typography>
+                                                            Date: {oneEvent.eventDate}
+                                                            <br/>
+                                                            Location: {oneEvent.eventLocation}
+                                                        </Typography>
+                                                    </StyledAccordionDetails>
+                                                </StyledAccordion>
+                                            : ''}
+                                        </Box>
+                                    ))
+                                ) : (
+                                    <Typography variant="body1" color="text.secondary">
+                                        No events found.
+                                    </Typography>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+        </ScreenLayout>
+    );
 };
