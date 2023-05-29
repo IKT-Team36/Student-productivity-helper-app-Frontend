@@ -1,11 +1,11 @@
 import React, {FC, useState} from 'react'
 import {ScreenLayout} from "@src/ui/layout/main-layout/ScreenLayout";
-import {alpha, Box, Button, Grid, styled, Typography, useTheme} from "@mui/material";
+import {alpha, Box, Grid, styled, Typography, useTheme} from "@mui/material";
 import {
-    AddRounded,
     RotateRightRounded,
     PendingOutlined,
-    CheckCircleOutlineRounded
+    CheckCircleOutlineRounded,
+    PlaylistAddCheckRounded
 } from '@mui/icons-material';
 import {Breadcrumb} from "@src/routing/Routes";
 
@@ -132,12 +132,8 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
         e.stopPropagation()
     }
 
-    const createButton = (
-        <Button variant="outlined" startIcon={<AddRounded/>}>Create new</Button>
-    )
-
     return (
-        <ScreenLayout title={'Todos'} action={createButton} breadcrumbs={breadcrumbs}>
+        <ScreenLayout title={'Todos'} breadcrumbs={breadcrumbs}>
             <Box textAlign={'justify'} sx={{
                 border: '1px solid',
                 borderColor: 'primary.main',
@@ -160,18 +156,30 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
                                        maxHeight={'300px'}
                         >
                             <Box minHeight={'300px'} maxHeight={'300px'} overflow={'hidden'}
-                                 sx={{overflowY: "scroll"}} color={'primary'}>
-                                {taskTodo.map((task) => {
-                                    return (
-                                        <ItemStyled
-                                            key={task}
-                                            draggable={true}
-                                            onDragStart={(e) => handleOnDrag(e, task, 'todo')}>
-                                            <Typography noWrap variant={'caption'}>Description:</Typography>
-                                            <Typography noWrap variant={'subtitle2'}>{task}</Typography>
-                                        </ItemStyled>
-                                    )
-                                })}
+                                 sx={{overflowY: "scroll"}} color={'primary'} textAlign={'center'}>
+                                {taskTodo.length > 0 ?
+                                    (
+                                        <>
+                                            {
+                                                taskTodo.map((task) => {
+                                                    return (
+                                                        <ItemStyled
+                                                            key={task}
+                                                            draggable={true}
+                                                            onDragStart={(e) => handleOnDrag(e, task, 'todo')}>
+                                                            <Typography noWrap
+                                                                        variant={'caption'}>Description:</Typography>
+                                                            <Typography noWrap variant={'subtitle2'}>{task}</Typography>
+                                                        </ItemStyled>
+                                                    )
+                                                })
+                                            }
+                                        </>
+                                    ) :
+                                    <Box>
+                                        <PlaylistAddCheckRounded color={'primary'}/>
+                                    </Box>
+                                }
                             </Box>
                         </TodoContainer>
 
@@ -213,17 +221,26 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
                         >
                             <Box minHeight={'300px'} maxHeight={'300px'} overflow={'hidden'}
                                  sx={{overflowY: "scroll"}} color={'primary'}>
-                                {taskInProgress.map((task) => {
-                                    return (
-                                        <ItemStyled
-                                            key={task}
-                                            draggable={true}
-                                            onDragStart={(e) => handleOnDrag(e, task, 'in progress')}>
-                                            <Typography noWrap variant={'caption'}>Description:</Typography>
-                                            <Typography noWrap variant={'subtitle2'}>{task}</Typography>
-                                        </ItemStyled>
-                                    )
-                                })}
+                                {taskInProgress.length > 0 ?
+                                    (
+                                        <>
+                                            {taskInProgress.map((task) => {
+                                                return (
+                                                    <ItemStyled
+                                                        key={task}
+                                                        draggable={true}
+                                                        onDragStart={(e) => handleOnDrag(e, task, 'in progress')}>
+                                                        <Typography noWrap variant={'caption'}>Description:</Typography>
+                                                        <Typography noWrap variant={'subtitle2'}>{task}</Typography>
+                                                    </ItemStyled>
+                                                )
+                                            })}
+                                        </>
+                                    ) :
+                                    <Box>
+                                        <PlaylistAddCheckRounded color={'primary'}/>
+                                    </Box>
+                                }
                             </Box>
                         </TodoContainer>
 
@@ -265,18 +282,28 @@ export const Todos: FC<Prop> = ({breadcrumbs}) => {
                         >
                             <Box minHeight={'300px'} maxHeight={'300px'} overflow={'hidden'}
                                  sx={{overflowY: "scroll"}} color={'primary'}>
-                                {taskDone.map((task) => {
-                                    return (
-                                        <ItemStyled
-                                            key={task}
-                                            draggable={true}
-                                            onDragStart={(e) => handleOnDrag(e, task, 'done')}
-                                        >
-                                            <Typography noWrap variant={'caption'}>Description:</Typography>
-                                            <Typography noWrap variant={'subtitle2'}>{task}</Typography>
-                                        </ItemStyled>
-                                    )
-                                })}
+                                {
+                                    taskDone.length > 0 ? (
+                                            <>
+                                                {taskDone.map((task) => {
+                                                    return (
+                                                        <ItemStyled
+                                                            key={task}
+                                                            draggable={true}
+                                                            onDragStart={(e) => handleOnDrag(e, task, 'done')}
+                                                        >
+                                                            <Typography noWrap variant={'caption'}>Description:</Typography>
+                                                            <Typography noWrap variant={'subtitle2'}>{task}</Typography>
+                                                        </ItemStyled>
+                                                    )
+                                                })}
+                                            </>
+                                        )
+                                        :
+                                        <Box>
+                                            <PlaylistAddCheckRounded color={'primary'}/>
+                                        </Box>
+                                }
                             </Box>
                         </TodoContainer>
 
