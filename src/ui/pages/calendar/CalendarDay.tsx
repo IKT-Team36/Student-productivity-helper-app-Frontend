@@ -93,7 +93,7 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
     const selectedDate = !outsideCurrentMonth && dayHasEvent(day);
 
     useEffect(() => {
-        if (!open) {
+        if (!open && selectedDate) {
             setLoading(true);
             fetch('http://localhost:7762/api/v1/event/all')
                 .then(response => response.json())
@@ -134,9 +134,8 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
                                 <CircularProgress size="2rem"/>
                             </Box> :
                             <Box style={{overflow: "hidden", textOverflow: "ellipsis"}}>
-                                {/* display first 3 events */}
-                                {profile.map(profiler =>
-                                    <Box key={profiler.eventName}>
+                                {profile.map((profiler, index) =>
+                                    <Box key={index}>
                                         {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
                                             <Typography
                                                 sx={{textAlign: 'center'}}>{profiler.eventName} </Typography> : ''}
@@ -161,8 +160,8 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
                         </Box> :
                         <>
                             {
-                                profile.map(profiler =>
-                                    <Box key={profiler.eventName}>
+                                profile.map((profiler, index) =>
+                                    <Box key={index}>
                                         {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
                                             <Typography>{profiler.eventLocation} <br/>
                                                 {dayjs(profiler.eventDate).format('HH:mm DD/MMMM/YYYY').toString()}
