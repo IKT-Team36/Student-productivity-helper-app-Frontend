@@ -7,6 +7,7 @@ import {
   CardComponentList,
   CardInfo,
 } from "./CardComponent";
+import { Link } from "react-router-dom";
 
 export type CardListProps = {
   title: string;
@@ -24,7 +25,9 @@ export const ListView: React.FC<CardListProps> = ({ title, data }) => (
       {title}
     </Typography>
     {data.map((info) => (
-      <CardComponentList key={info.id} info={info} />
+      <Link to={`/courses/${info.id}`} style={{ textDecoration: "none" }}>
+        <CardComponentList key={info.id} info={info} />
+      </Link>
     ))}
   </div>
 );
@@ -50,10 +53,13 @@ export const GridView: React.FC<CardListProps> = ({ title, data }) => {
       <Grid container spacing={2}>
         {data.map((info) => (
           <Grid item xs={12} sm={12} md={6} lg={4} xl={4} key={info.id}>
-            <CardComponentGrid info={info} />
+            <Link to={`/courses/${info.id}`} style={{ textDecoration: "none" }}>
+              <CardComponentGrid info={info} />
+            </Link>
           </Grid>
         ))}
       </Grid>
     </div>
+    
   );
 };
