@@ -124,7 +124,7 @@ export const Notes: FC<Prop> = ({breadcrumbs}) => {
                                 </CardContent>
                                 <Box width={'15%'} height={'100%'}
                                      sx={{float: 'inline-end', position: 'absolute', right: '0', top: '0'}}
-                                     bgcolor={'primary.main'}></Box>
+                                     bgcolor={'primary.light'}></Box>
                             </Card>
                         )
                     }

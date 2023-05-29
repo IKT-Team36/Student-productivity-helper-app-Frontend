@@ -15,12 +15,12 @@ type SideMenuProps = {
         field: "alphabetical" | "dateAdded" | "";
         order: "asc" | "desc";
     };
-    groupBy: "isFinished" | "createdDate" | "";
+    groupBy: "isFinished"  | "";
     onSortChange: (
         field: "alphabetical" | "dateAdded" | "",
         order: "asc" | "desc"
     ) => void;
-    onGroupByChange: (groupBy: "isFinished" | "createdDate" | "") => void;
+    onGroupByChange: (groupBy: "isFinished"  | "") => void;
 };
 
 const SideMenu: React.FC<SideMenuProps> = ({
@@ -95,15 +95,6 @@ const SideMenu: React.FC<SideMenuProps> = ({
                                 />
                             }
                             label="Completed"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={groupBy === "createdDate"}
-                                    onChange={() => onGroupByChange("createdDate")}
-                                />
-                            }
-                            label="Created Date"
                         />
                     </FormGroup>
                 </FormControl>
