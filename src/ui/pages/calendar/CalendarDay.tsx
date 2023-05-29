@@ -1,6 +1,6 @@
 import React, {FC, ReactElement, useEffect, useState} from "react";
 import {PickersDay, PickersDayProps} from "@mui/x-date-pickers";
-import  {Dayjs} from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
 import {
     Badge,
     Box,
@@ -114,9 +114,10 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
                 <Box style={{overflow: "hidden", textOverflow: "ellipsis"}}>
                     {/* display first 3 events */}
                     {profile.map(profiler =>
-                        <Typography noWrap>
-                            {profiler.eventName} <br/>
-                        </Typography>
+                        <Box key={profiler.eventName}>
+                            {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
+                                <Typography sx={{textAlign:'center'}}>{profiler.eventName} </Typography> : ''}
+                        </Box>
                     )}
                 </Box>
             )
@@ -129,11 +130,13 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
         if (selectedDate) {
             result = (
                 <EventsBody>
-                    {profile.map(profiler=>
-                        <Typography>
-                            {profiler.eventLocation} <br/>
-                            {profiler.eventDate}
-                        </Typography>)}
+                    {profile.map(profiler =>
+                        <Box key={profiler.eventName}>
+                            {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
+                                <Typography>{profiler.eventLocation} <br/>
+                                    {dayjs(profiler.eventDate).format('HH:mm DD/MMMM/YYYY').toString()}
+                                </Typography> : ''}
+                        </Box>)}
                 </EventsBody>
             )
         }
