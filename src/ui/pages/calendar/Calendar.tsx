@@ -121,6 +121,7 @@ export const Calendar: FC<Prop> = ({breadcrumbs}) => {
     const initialValue = dayjs();
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         setLoading(true);
         fetch('http://localhost:7762/api/v1/event/all')
             .then(response => response.json())

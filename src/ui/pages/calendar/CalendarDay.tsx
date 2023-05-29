@@ -91,6 +91,7 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent, loading, getEvents
     const selectedDate = !outsideCurrentMonth && dayHasEvent(day);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         if (!loading && profile === undefined) {
             const event = getEventsForDay(day)
             setProfile(event)
