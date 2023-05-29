@@ -4,13 +4,15 @@ import {Snackbar} from "@src/ui-shared/base/Snackbar";
 
 
 interface SnackbarContextValue {
-    showSnackbar: (message: string, status: AlertColor) => void
     closeSnackbar: () => void
+    showSnackbar: (message: string, status: AlertColor) => void
+    open: boolean
 }
 
 const defaultSnackbarContextValue: SnackbarContextValue = {
-    showSnackbar: (_message: string, _status: AlertColor) => null,
     closeSnackbar: () => null,
+    showSnackbar: (_message: string, _status: AlertColor) => null,
+    open: false
 }
 
 export const SnackbarContext = createContext<SnackbarContextValue>(defaultSnackbarContextValue)
@@ -33,6 +35,8 @@ export const SnackbarProvider: FC<PropsWithChildren> = ({children}): ReactElemen
         status: 'info',
     })
 
+    const open = snackbarState.open
+
     const showSnackbar = (message: string, status: AlertColor) => {
         setSnackbarState({
             open: true,
@@ -52,6 +56,7 @@ export const SnackbarProvider: FC<PropsWithChildren> = ({children}): ReactElemen
         return {
             closeSnackbar,
             showSnackbar,
+            open
         }
     }, [])
 

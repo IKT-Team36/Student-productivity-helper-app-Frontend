@@ -2,8 +2,9 @@ import React, {FC, ReactElement, useEffect, useState} from "react";
 import {PickersDay, PickersDayProps} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
 import {
+    alpha,
     Badge,
-    Box,
+    Box, CircularProgress,
     ClickAwayListener,
     Fade,
     Paper, Popper,
@@ -13,6 +14,7 @@ import {
     useMediaQuery,
     useTheme,
 } from "@mui/material";
+import {useSnackbar} from "@src/ui-shared/base/SnackbarProvider";
 
 const EventPopperStyled = styled(Popper)(() => ({
     zIndex: 90000,
@@ -52,6 +54,10 @@ const EventBadge = styled(Badge)<{ isselected: number }>
         marginTop: 2,
         marginBottom: 2,
         backgroundColor: isselected ? theme.palette.primary.light : '',
+        color: isselected ? theme.palette.getContrastText(theme.palette.primary.light) : '',
+        '& .MuiCircularProgress-root': {
+            color: isselected ? alpha(theme.palette.getContrastText(theme.palette.primary.light), .3) : '',
+        },
         [theme.breakpoints.up('md')]: {
             height: isselected ? '50px' : '',
             width: isselected ? '90px' : '',
@@ -72,7 +78,10 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
     const theme = useTheme()
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-    const [open, setOpen] = React.useState(false);
+    const [openCalendar, setOpenCalendar] = React.useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const {showSnackbar, open} = useSnackbar()
 
     const [profile, setProfile] = useState<StateProperties[]>([]);
 
@@ -84,26 +93,33 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
     const selectedDate = !outsideCurrentMonth && dayHasEvent(day);
 
     useEffect(() => {
-
-        fetch('http://localhost:7762/api/v1/event/all')
-            .then(response => response.json())
-            .then(data => {
-                setProfile(data);
-            })
+        if (!open) {
+            setLoading(true);
+            fetch('http://localhost:7762/api/v1/event/all')
+                .then(response => response.json())
+                .then(data => {
+                    setProfile(data);
+                    setLoading(false);
+                })
+                .catch(() => {
+                    showSnackbar('Server not available', "error")
+                    setLoading(false);
+                })
+        }
     }, []);
 
 
     const handleDaySelect = (event: React.MouseEvent<HTMLButtonElement>) => {
-        if (selectedDate && !open) {
+        if (selectedDate && !openCalendar) {
             setAnchorEl(event.currentTarget);
-            setOpen(true);
+            setOpenCalendar(true);
         }
     };
 
     const handleDayUnselect = () => {
-        if (open && anchorEl !== null) {
+        if (openCalendar && anchorEl !== null) {
             setAnchorEl(null);
-            setOpen(false);
+            setOpenCalendar(false);
         }
     };
 
@@ -111,14 +127,23 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
         let result = <></>
         if (selectedDate && !smallScreen) {
             result = (
-                <Box style={{overflow: "hidden", textOverflow: "ellipsis"}}>
-                    {/* display first 3 events */}
-                    {profile.map(profiler =>
-                        <Box key={profiler.eventName}>
-                            {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
-                                <Typography sx={{textAlign:'center'}}>{profiler.eventName} </Typography> : ''}
-                        </Box>
-                    )}
+                <Box>
+                    {
+                        loading ?
+                            <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <CircularProgress size="2rem"/>
+                            </Box> :
+                            <Box style={{overflow: "hidden", textOverflow: "ellipsis"}}>
+                                {/* display first 3 events */}
+                                {profile.map(profiler =>
+                                    <Box key={profiler.eventName}>
+                                        {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
+                                            <Typography
+                                                sx={{textAlign: 'center'}}>{profiler.eventName} </Typography> : ''}
+                                    </Box>
+                                )}
+                            </Box>
+                    }
                 </Box>
             )
         }
@@ -130,13 +155,23 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
         if (selectedDate) {
             result = (
                 <EventsBody>
-                    {profile.map(profiler =>
-                        <Box key={profiler.eventName}>
-                            {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
-                                <Typography>{profiler.eventLocation} <br/>
-                                    {dayjs(profiler.eventDate).format('HH:mm DD/MMMM/YYYY').toString()}
-                                </Typography> : ''}
-                        </Box>)}
+                    {loading ?
+                        <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            <CircularProgress size={smallScreen ? "2rem" : "5rem"}/>
+                        </Box> :
+                        <>
+                            {
+                                profile.map(profiler =>
+                                    <Box key={profiler.eventName}>
+                                        {parseInt(day.format('DD')) == parseInt(dayjs(profiler.eventDate).format('DD')) ?
+                                            <Typography>{profiler.eventLocation} <br/>
+                                                {dayjs(profiler.eventDate).format('HH:mm DD/MMMM/YYYY').toString()}
+                                            </Typography> : ''}
+                                    </Box>)
+                            }
+                        </>
+
+                    }
                 </EventsBody>
             )
         }
@@ -158,7 +193,7 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
 
     const smallScreenEventDetails = (
         <EventPopperStyled
-            open={open}
+            open={openCalendar}
             anchorEl={anchorEl}
             placement={'bottom'}
             transition
@@ -180,10 +215,10 @@ export const CalendarDay: FC<Prop> = ({dayProps, dayHasEvent}): ReactElement => 
     )
 
     const displayTooltipWithCalendarDay = (
-        selectedDate && !open ? (
+        selectedDate && !openCalendar ? (
             <Tooltip
                 TransitionComponent={Fade}
-                title={selectedDate && !open && eventDetails()}
+                title={selectedDate && !openCalendar && eventDetails()}
                 TransitionProps={{timeout: 200}}
                 arrow
             >

@@ -22,8 +22,6 @@ const MainContent = styled(Box)<{ open: boolean }>(({theme, open}) => ({
     marginLeft: open ? `${DRAWER_OPEN_WIDTH}px` : `${DRAWER_CLOSE_WIDTH_LG}px`,
     [theme.breakpoints.down('md')]: {
         marginLeft: open ? `${DRAWER_OPEN_WIDTH}px` : `0px`,
-        // prevent horizontal scrollbar on mobile
-        overflow: 'scroll',
     },
     flexGrow: 1,
 }))
