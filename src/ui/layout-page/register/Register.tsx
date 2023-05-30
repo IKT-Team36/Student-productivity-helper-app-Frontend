@@ -9,7 +9,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import {useFormik} from "formik";
 import * as yup from "yup";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink,useNavigate} from "react-router-dom";
 
 interface FormValues {
     name: string;
@@ -34,6 +34,7 @@ const validationSchema = yup.object({
 });
 
 export const Register = (): ReactElement => {
+    const navigate = useNavigate()
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -141,6 +142,7 @@ export const Register = (): ReactElement => {
                     fullWidth
                     variant="contained"
                     sx={{mt: 3, mb: 2}}
+                    onClick={() => navigate('/home')}
                 >
                     Register
                 </Button>
